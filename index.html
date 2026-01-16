@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2026 SK ESG Report</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
     
     <style>
         /* --- [변수 및 기본 설정] --- */
         :root {
             --sk-red: #EA002C;
             --sk-orange: #F47725;
-            --sk-gradient: linear-gradient(135deg, #EA002C, #F47725);
+            /* 더 쨍하고 강렬한 그라데이션 */
+            --sk-gradient: linear-gradient(135deg, #EA002C 0%, #F47725 100%);
             --dark-navy: #0c2461;
-            --bg-light: #f4f6f8;
+            --bg-light: #f8f9fa;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -24,17 +25,24 @@
         a { text-decoration: none; color: inherit; transition: 0.3s; }
         .container { width: 90%; max-width: 1600px; margin: 0 auto; position: relative; z-index: 2; }
 
-        /* --- [1] Navbar (간격 넓힘) --- */
+        /* 텍스트 그라데이션 유틸리티 클래스 */
+        .text-gradient {
+            background: var(--sk-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        /* --- [1] Navbar (이전 설정 유지) --- */
         header {
             position: fixed; top: 0; width: 100%; z-index: 1000;
-            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(0,0,0,0.05); padding: 18px 0;
         }
         .nav-inner { display: flex; justify-content: space-between; align-items: center; }
         .logo { font-weight: 900; font-size: 1.6rem; color: var(--sk-red); display: flex; align-items: center; gap: 8px; }
         .logo span { color: #333; font-size: 1.4rem; }
         
-        /* 메뉴 간격 25px -> 50px로 확장 */
         .nav-menu { display: flex; gap: 50px; }
         .nav-menu li a {
             font-weight: 600; font-size: 0.9rem; color: #444; position: relative;
@@ -47,18 +55,28 @@
         }
         .nav-menu li a:hover::after { width: 100%; }
 
-        /* --- [2] Hero & Wave --- */
+        /* --- [2] Hero & Wave (컬러 강화) --- */
         .hero {
             height: 95vh; position: relative; display: flex; align-items: center;
             background: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop') center/cover fixed;
             overflow: hidden;
         }
+        /* 배경을 조금 더 어둡게 눌러서 앞의 그라데이션 텍스트 강조 */
         .hero-overlay {
             position: absolute; inset: 0;
-            background: linear-gradient(135deg, rgba(0,0,0,0.8), rgba(0,0,0,0.2));
+            background: linear-gradient(to bottom, rgba(12, 36, 97, 0.8), rgba(0,0,0,0.6));
         }
         .hero-content { color: white; margin-top: -50px; }
-        .hero h1 { font-size: clamp(3.5rem, 6vw, 6.5rem); font-weight: 800; line-height: 1.1; margin-bottom: 20px; }
+        /* 뱃지 컬러 변경 */
+        .hero-badge {
+            background: var(--sk-gradient); color:white; padding:6px 16px; border-radius:30px;
+            font-weight:800; font-size:0.85rem; margin-bottom:25px; display:inline-block; letter-spacing:1px;
+            box-shadow: 0 5px 15px rgba(234, 0, 44, 0.3);
+        }
+        /* 메인 타이틀 그라데이션 적용 및 크기 키움 */
+        .hero h1 {
+            font-size: clamp(4rem, 7vw, 7rem); font-weight: 900; line-height: 1.1; margin-bottom: 20px;
+        }
         
         .waves-container {
             position: absolute; bottom: 0; left: 0; width: 100%; height: 15vh;
@@ -71,108 +89,76 @@
         .parallax > use:nth-child(4) { animation-delay: -5s; animation-duration: 20s; fill: #fff; }
         @keyframes move-forever { 0% { transform: translate3d(-90px,0,0); } 100% { transform: translate3d(85px,0,0); } }
 
-        /* --- [3] Key Highlights (Broken Grid Layout) --- */
+        /* --- [3] Key Highlights (컬러 강화) --- */
         .highlights-section {
-            padding: 100px 0; background: #fff;
+            padding: 120px 0; background: #fff;
             perspective: 1000px;
+            /* 배경에 은은한 브랜드 컬러 빛 추가 */
+            background-image: radial-gradient(circle at 10% 10%, rgba(234, 0, 44, 0.03), transparent 40%),
+                              radial-gradient(circle at 90% 90%, rgba(244, 119, 37, 0.03), transparent 40%);
         }
         .section-header { margin-bottom: 60px; display: flex; justify-content: space-between; align-items: end; }
-        .section-header h2 { font-size: 3rem; font-weight: 800; color: #111; letter-spacing: -1px; }
-
-        /* 불규칙한 그리드 설정 */
+        /* 섹션 타이틀에 그라데이션 적용 */
+        .section-header h2 { font-size: 3.5rem; font-weight: 900; letter-spacing: -1px; }
+        
         .broken-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr); /* 4열 */
-            grid-auto-rows: minmax(280px, auto);
-            gap: 25px;
+            display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: minmax(280px, auto); gap: 25px;
         }
-
-        /* 공통 카드 스타일 */
         .grid-item {
-            border-radius: 24px; position: relative; overflow: hidden;
-            background: #f8f9fa;
-            transition: transform 0.3s ease;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            /* 기본적으로 둥둥 떠다니는 애니메이션 적용 */
+            border-radius: 24px; position: relative; overflow: hidden; background: #f8f9fa;
+            transition: transform 0.3s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
             animation: float-card 6s ease-in-out infinite;
         }
-        /* 애니메이션 시차 적용 (모두 똑같이 움직이면 어색함) */
         .grid-item:nth-child(odd) { animation-duration: 7s; animation-delay: 0.5s; }
         .grid-item:nth-child(even) { animation-duration: 5.5s; animation-delay: -1s; }
-        
-        /* 둥둥 떠다니는 효과 Keyframes */
-        @keyframes float-card {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); } /* 살짝 위로 */
-            100% { transform: translateY(0px); }
-        }
+        @keyframes float-card { 0% { transform: translateY(0px); } 50% { transform: translateY(-8px); } 100% { transform: translateY(0px); } }
+        .grid-item:hover { z-index: 10; box-shadow: 0 25px 50px rgba(0,0,0,0.15); animation-play-state: paused; }
 
-        /* 3D Tilt 효과 (Hover 시) */
-        .grid-item:hover {
-            z-index: 10;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
-            animation-play-state: paused; /* 호버 시 둥둥 효과 멈춤 */
-        }
-
-        /* --- [3-1] 이미지 카드 스타일 --- */
+        /* --- [3-1] 이미지 카드 (컬러 오버레이 강화) --- */
         .img-card .card-bg {
             position: absolute; inset: 0; background-size: cover; background-position: center;
             transition: transform 0.5s;
+            filter: grayscale(30%); /* 이미지 채도를 살짝 빼서 오버레이 컬러 강조 */
         }
-        .grid-item:hover .card-bg { transform: scale(1.1); }
+        .grid-item:hover .card-bg { transform: scale(1.1); filter: grayscale(0%); }
+        
+        /* 기본 오버레이 (어두운 톤) */
         .img-card .content {
             position: absolute; inset: 0; padding: 30px;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent 70%);
-            display: flex; flex-direction: column; justify-content: flex-end;
-            color: white;
+            background: linear-gradient(to top, rgba(12, 36, 97, 0.9), transparent 70%);
+            display: flex; flex-direction: column; justify-content: flex-end; color: white; transition: 0.3s;
         }
         
-        /* --- [3-2] 데이터(Performance) 카드 스타일 --- */
+        /* [핵심] 특정 카드에 브랜드 컬러 오버레이 적용 */
+        .overlay-red .content { background: linear-gradient(to top, rgba(234, 0, 44, 0.85), transparent 80%); }
+        .overlay-orange .content { background: linear-gradient(to top, rgba(244, 119, 37, 0.85), transparent 80%); }
+
+        /* --- [3-2] 데이터 카드 --- */
         .data-card {
-            background: white; border: 1px solid #eee;
-            padding: 30px; display: flex; flex-direction: column; justify-content: space-between;
+            background: white; border: 1px solid #eee; padding: 30px; display: flex; flex-direction: column; justify-content: space-between;
         }
         .data-header { display: flex; justify-content: space-between; align-items: flex-start; }
-        .data-icon { font-size: 2rem; }
-        
-        /* 숫자 디자인 */
-        .big-stat {
-            font-size: 3.5rem; font-weight: 800; color: var(--dark-navy);
-            line-height: 1; margin: 15px 0;
-        }
-        .stat-unit { font-size: 1.2rem; color: #888; font-weight: 600; }
-        
-        /* 도넛 차트 (CSS Conic Gradient) */
+        .data-icon { font-size: 2rem; color: var(--sk-red); } /* 아이콘 컬러 변경 */
+        .big-stat { font-size: 3.5rem; font-weight: 800; color: var(--dark-navy); line-height: 1; margin: 15px 0; }
+        .stat-unit { font-size: 1.2rem; color: var(--sk-orange); font-weight: 600; } /* 단위 컬러 변경 */
         .donut-chart {
             width: 80px; height: 80px; border-radius: 50%;
-            background: conic-gradient(var(--sk-orange) 0% 0%, #eee 0% 100%); /* JS로 제어 */
-            display: flex; align-items: center; justify-content: center;
-            margin-bottom: 10px;
+            display: flex; align-items: center; justify-content: center; margin-bottom: 10px;
         }
         .donut-inner { width: 60px; height: 60px; background: white; border-radius: 50%; }
 
-        /* --- [Grid Spans - 불완전성 부여] --- */
-        .span-2-col { grid-column: span 2; }
-        .span-2-row { grid-row: span 2; }
-        .span-tall { grid-row: span 2; }
-        
-        /* 카드 내 텍스트 */
+        .span-2-col { grid-column: span 2; } .span-2-row { grid-row: span 2; } .span-tall { grid-row: span 2; }
         h3 { font-size: 1.5rem; margin-bottom: 5px; font-weight: 700; }
-        p.desc { font-size: 0.95rem; opacity: 0.8; margin-top: 5px; }
+        p.desc { font-size: 0.95rem; opacity: 0.9; margin-top: 5px; font-weight: 300; }
 
-        /* Footer */
         footer { background: var(--dark-navy); color: white; padding: 60px 0; margin-top: 50px; }
-
-        /* 반응형 */
         @media (max-width: 1024px) {
             .broken-grid { grid-template-columns: repeat(2, 1fr); }
-            .span-2-col, .span-tall { grid-column: span 1; grid-row: span 1; }
-            .span-2-row { grid-column: span 2; height: 350px; }
+            .span-2-col, .span-tall { grid-column: span 1; grid-row: span 1; } .span-2-row { grid-column: span 2; height: 350px; }
+            .hero h1 { font-size: 3.5rem; }
         }
         @media (max-width: 768px) {
-            .broken-grid { grid-template-columns: 1fr; }
-            .span-2-row { grid-column: span 1; }
-            .nav-menu { display: none; }
+            .broken-grid { grid-template-columns: 1fr; } .span-2-row { grid-column: span 1; } .nav-menu { display: none; }
         }
     </style>
 </head>
@@ -195,9 +181,9 @@
     <section class="hero">
         <div class="hero-overlay"></div>
         <div class="container hero-content">
-            <span style="background:white; color:var(--dark-navy); padding:6px 16px; border-radius:30px; font-weight:800; font-size:0.85rem; margin-bottom:25px; display:inline-block; letter-spacing:1px;">REPORT 2026</span>
-            <h1>Sustainable<br>Movement.</h1>
-            <p style="margin-bottom:0;">불확실한 미래를 확신으로 바꾸는 힘.</p>
+            <span class="hero-badge">REPORT 2026</span>
+            <h1><span class="text-gradient">Sustainable<br>Movement.</span></h1>
+            <p style="margin-bottom:0; font-size:1.3rem;">불확실한 미래를 확신으로 바꾸는 힘.</p>
         </div>
         <div class="waves-container">
             <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
@@ -215,16 +201,16 @@
     <section class="highlights-section">
         <div class="container">
             <div class="section-header">
-                <h2>Key Highlights</h2>
-                <a href="#" style="font-weight:600; font-size:0.9rem;">View Full Report →</a>
+                <h2><span class="text-gradient">Key Highlights</span></h2>
+                <a href="#" style="font-weight:700; font-size:0.9rem; color:var(--sk-red);">View Full Report →</a>
             </div>
 
             <div class="broken-grid">
                 
-                <div class="grid-item img-card span-2-row span-2-col tilt-card">
+                <div class="grid-item img-card span-2-row span-2-col tilt-card overlay-red">
                     <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?q=80&w=2070&auto=format&fit=crop');"></div>
                     <div class="content">
-                        <span style="color:var(--sk-orange); font-weight:700; margin-bottom:5px;">ENVIRONMENTAL</span>
+                        <span style="color:#fff; font-weight:700; margin-bottom:5px; letter-spacing:1px;">ENVIRONMENTAL</span>
                         <h3>Net Zero 2040</h3>
                         <p class="desc">탄소 중립 달성 시점 10년 조기화 및 RE100 95% 이행.</p>
                     </div>
@@ -239,27 +225,26 @@
                     </div>
                     <div>
                         <div class="big-stat">45<span class="stat-unit">%</span></div>
-                        <p style="font-size:0.9rem; font-weight:600; color:#555;">탄소 배출량 감축</p>
-                        <p style="font-size:0.8rem; color:#999; margin-top:5px;">(2020년 대비)</p>
+                        <p style="font-size:0.9rem; font-weight:700; color:#333;">탄소 배출량 감축</p>
                     </div>
                 </div>
 
-                <div class="grid-item img-card span-tall tilt-card">
+                <div class="grid-item img-card span-tall tilt-card overlay-orange">
                     <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2032&auto=format&fit=crop');"></div>
                     <div class="content">
-                        <span style="color:var(--sk-orange); font-weight:700; margin-bottom:5px;">SOCIAL</span>
+                        <span style="color:#fff; font-weight:700; margin-bottom:5px; letter-spacing:1px;">SOCIAL</span>
                         <h3>Safety Net</h3>
                         <p class="desc">AI 기반 독거노인 돌봄 서비스 10만 가구 확대.</p>
                     </div>
                 </div>
 
-                <div class="grid-item data-card tilt-card" style="background:#222; color:white; border:none;">
+                <div class="grid-item data-card tilt-card" style="background:var(--dark-navy); color:white; border:none;">
                     <div class="data-header">
-                        <span style="font-size:3rem;">A+</span>
-                        <span class="data-icon">🏆</span>
+                        <span class="text-gradient" style="font-size:3.5rem; font-weight:800;">A+</span>
+                        <span class="data-icon" style="color:var(--sk-orange);">🏆</span>
                     </div>
                     <div>
-                        <p style="font-size:0.9rem; opacity:0.7;">KCGS 평가</p>
+                        <p style="font-size:0.9rem; opacity:0.8;">KCGS 평가</p>
                         <div style="font-size:1.4rem; font-weight:700; margin-top:5px;">5년 연속<br>통합등급 최우수</div>
                     </div>
                 </div>
@@ -267,14 +252,14 @@
                 <div class="grid-item img-card span-2-col tilt-card">
                     <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop');"></div>
                     <div class="content">
-                        <span style="color:#fff; opacity:0.8; font-weight:700; margin-bottom:5px;">GOVERNANCE</span>
+                        <span style="color:var(--sk-orange); font-weight:700; margin-bottom:5px;">GOVERNANCE</span>
                         <h3>Advanced Board</h3>
                         <p class="desc">이사회 다양성 및 전문성 강화.</p>
                     </div>
                 </div>
 
-                 <div class="grid-item data-card tilt-card" style="justify-content:center; align-items:center; text-align:center;">
-                    <span style="font-size:2rem; color:var(--sk-orange); margin-bottom:10px;">➔</span>
+                 <div class="grid-item data-card tilt-card" style="justify-content:center; align-items:center; text-align:center; background: linear-gradient(135deg, #fff, #fff0f0);">
+                    <span style="font-size:2rem; color:var(--sk-red); margin-bottom:10px;">➔</span>
                     <h3 style="font-size:1.2rem; color:var(--dark-navy);">Data Book<br>Download</h3>
                 </div>
 
@@ -298,10 +283,9 @@
                 const y = e.clientY - rect.top;
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
-                const rotateX = ((y - centerY) / centerY) * -8; // 각도 약간 줄임
+                const rotateX = ((y - centerY) / centerY) * -8;
                 const rotateY = ((x - centerX) / centerX) * 8;
                 
-                // 마우스 오버 시 애니메이션 멈추고 틸트 적용
                 card.style.animationPlayState = 'paused';
                 card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
             });
