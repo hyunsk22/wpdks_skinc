@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 SK 지속가능경영보고서</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        /* --- CSS Variables & Reset --- */
+        :root {
+            --bg-main: #0a110e; /* 깊은 다크 그린/블랙 */
+            --bg-secondary: #141f1a;
+            --accent-color: #00ff9d; /* 네온 민트 그린 */
+            --text-primary: #ffffff;
+            --text-secondary: #a0b3a9;
+            --card-bg: rgba(255, 255, 255, 0.05); /* 유리 효과 배경 */
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        a { text-decoration: none; color: inherit; }
+        section { padding: 100px 20px; max-width: 1200px; margin: 0 auto; }
+
+        /* --- 유틸리티 클래스 (스크롤 애니메이션용) --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- 1. Hero Section (메인 상단) --- */
+        .hero {
+            height: 95vh; /* 화면 가득 채움 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 0 10%;
+            /* 배경에 은은한 그라데이션 효과 */
+            background: radial-gradient(circle at top right, rgba(0, 255, 157, 0.15), transparent 40%),
+                        var(--bg-main);
+        }
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem); /* 반응형 폰트 크기 */
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+        .hero h1 span { color: var(--accent-color); }
+        .hero p { font-size: 1.2rem; color: var(--text-secondary); max-width: 600px; margin-bottom: 40px; }
+        
+        .cta-button {
+            padding: 15px 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--bg-main);
+            background-color: var(--accent-color);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px -10px rgba(0, 255, 157, 0.5);
+        }
+
+        /* --- 2. Vision Section --- */
+        .vision { text-align: center; }
+        .vision h2 { font-size: 2.5rem; margin-bottom: 30px; }
+        .vision-quote {
+            font-size: 1.5rem; font-weight: 300; color: var(--text-secondary); max-width: 800px; margin: 0 auto;
+        }
+
+        /* --- 3. Highlights (Bento Grid - 핵심 변경 부분) --- */
+        .highlights h2 { font-size: 2rem; margin-bottom: 40px; }
+        
+        /* 벤토 그리드 레이아웃 정의 */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 4열 그리드 */
+            grid-template-rows: repeat(2, 250px);  /* 2행, 높이 고정 */
+            gap: 20px;
+        }
+
+        /* 개별 카드 디자인 */
+        .bento-item {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: border-color 0.3s ease, transform 0.3s ease;
+            backdrop-filter: blur(10px); /* 유리 블러 효과 */
+        }
+        .bento-item:hover {
+            border-color: var(--accent-color);
+            transform: scale(1.02); /* 살짝 커지는 효과 */
+        }
+        .bento-item h3 { font-size: 1.3rem; margin-bottom: 10px; }
+        .bento-item p { color: var(--text-secondary); font-size: 0.9rem; }
+        .bento-icon { font-size: 2rem; color: var(--accent-color); margin-bottom: 20px; }
+
+        /* 그리드 내에서 크기 다르게 배치 (Span 활용) */
+        .item-large { grid-column: span 2; grid-row: span 2; background: linear-gradient(135deg, var(--card-bg), rgba(0,255,157,0.05)); }
+        .item-medium-h { grid-column: span 2; }
+        .item-medium-v { grid-row: span 2; }
+
+        /* --- 4. ESG Areas (가로 스크롤) --- */
+        .esg-areas { overflow-x: hidden; }
+        .esg-scroller {
+            display: flex;
+            gap: 30px;
+            padding-bottom: 20px;
+            overflow-x: auto; /* 가로 스크롤 허용 */
+            scroll-snap-type: x mandatory; /* 부드러운 스크롤 스냅 */
+            -webkit-overflow-scrolling: touch;
+        }
+        .esg-card {
+            min-width: 350px;
+            height: 450px;
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            padding: 40px;
+            scroll-snap-align: start;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .esg-card h3 { font-size: 1.8rem; margin-top: 20px; margin-bottom: 15px; }
+        .esg-card span.category { color: var(--accent-color); font-weight: 800; letter-spacing: 2px; }
+        .esg-card .card-link {
+            position: absolute; bottom: 40px; left: 40px;
+            font-weight: 600; color: var(--accent-color);
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center; padding: 50px; color: var(--text-secondary); font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* --- 모바일 반응형 --- */
+        @media (max-width: 768px) {
+            .hero { padding: 0 5%; align-items: center; text-align: center; }
+            .hero h1 { font-size: 3.5rem; }
+            .section { padding: 60px 20px; }
+            /* 모바일에서는 벤토 그리드를 1열로 변경 */
+            .bento-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+            .item-large, .item-medium-h, .item-medium-v { grid-column: span 1; grid-row: span 1; height: 250px; }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <div>
+            <h1>The Future is<br><span>Sustainable.</span></h1>
+            <p>기술과 진정성으로 만들어가는 지속가능한 미래.<br>2026 SK 주식회사 지속가능경영보고서를 만나보세요.</p>
+            <button class="cta-button">2026 보고서 다운로드 PDF ↓</button>
+        </div>
+    </section>
+
+    <section class="vision reveal">
+        <h2>Our Vision</h2>
+        <p class="vision-quote">
+            "우리는 단순한 성장을 넘어, <br>지구와 사회의 지속가능한 솔루션이 되는 기업을 목표로 합니다."
+        </p>
+    </section>
+
+    <section class="highlights reveal">
+        <h2>2026 Key Highlights</h2>
+        <div class="bento-grid">
+            <div class="bento-item item-large">
+                <div class="bento-icon">⚡</div>
+                <div>
+                    <h3>Net Zero 가속화</h3>
+                    <p>2026년 기준 탄소 배출량 45% 감축 달성. 재생에너지 100% 전환 로드맵 조기 이행 중입니다.</p>
+                </div>
+            </div>
+            <div class="bento-item item-medium-h">
+                <div class="bento-icon">🤝</div>
+                <div>
+                    <h3>공급망 ESG 관리 강화</h3>
+                    <p>협력사 대상 AI 기반 리스크 관리 시스템 도입.</p>
+                </div>
+            </div>
+            <div class="bento-item">
+                <div class="bento-icon">🌐</div>
+                <h3>글로벌 이니셔티브</h3>
+                <p>DJSI World 5년 연속 편입.</p>
+            </div>
+            <div class="bento-item">
+                <div class="bento-icon">⚖️</div>
+                <h3>투명한 지배구조</h3>
+                <p>이사회 중심 경영 강화 및 다양성 확보.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="esg-areas reveal">
+        <h2>ESG Pillars</h2>
+        <div class="esg-scroller">
+            <div class="esg-card">
+                <span class="category">ENVIRONMENT</span>
+                <h3>Green Portfolio</h3>
+                <p>친환경 소재, 배터리, 수소 등 그린 비즈니스 포트폴리오로의 전환 성과를 확인하세요.</p>
+                <a href="#" class="card-link">자세히 보기 →</a>
+            </div>
+            <div class="esg-card">
+                <span class="category">SOCIAL</span>
+                <h3>Human Capital & Society</h3>
+                <p>구성원의 행복과 성장을 지원하고, 지역사회와 상생하는 다양한 활동을 소개합니다.</p>
+                <a href="#" class="card-link">자세히 보기 →</a>
+            </div>
+            <div class="esg-card">
+                <span class="category">GOVERNANCE</span>
+                <h3>Advanced Governance</h3>
+                <p>선진적인 지배구조 확립을 위한 노력과 윤리경영, 준법경영 현황을 투명하게 공개합니다.</p>
+                <a href="#" class="card-link">자세히 보기 →</a>
+            </div>
+            <div class="esg-card" style="background: var(--bg-main);">
+               <span class="category">DATA</span>
+               <h3>ESG Data Book</h3>
+               <p>정량적인 데이터를 통해 우리의 성과를 투명하게 확인하실 수 있습니다.</p>
+               <a href="#" class="card-link">데이터 보기 →</a>
+           </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2026 SK Inc. All rights reserved. This is a design concept mockup.</p>
+    </footer>
+
+    <script>
+        // 스크롤 할 때 요소들이 부드럽게 나타나게 하는 기능
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                } else {
+                    reveals[i].classList.remove("active"); // 다시 위로 올리면 사라지게 하려면 주석 해제
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        // 페이지 로드 시 한 번 실행시켜서 처음 보이는 영역 처리
+        reveal(); 
+    </script>
+</body>
+</html>
