@@ -3,160 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 SK TCFD Strategy Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <title>2026 SK TCFD Strategy Report</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* --- [변수 및 기본 설정] --- */
+        /* --- [1. 링크와 동일한 레이아웃 기본 설정] --- */
         :root {
             --sk-red: #EA002C;
             --sk-orange: #F47725;
+            --sk-gradient: linear-gradient(135deg, #EA002C, #F47725);
             --dark-navy: #0c2461;
-            --bg-body: #f0f2f5;
-            --sidebar-width: 250px;
-            --header-height: 60px;
+            --bg-gray: #f4f7fc;
+            --sidebar-width: 260px;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+        html { scroll-behavior: smooth; }
         body {
-            font-family: 'Noto Sans KR', sans-serif; 
-            background: var(--bg-body); color: #333;
-            height: 100vh; overflow: hidden; /* 스크롤 방지 (One-View) */
-            display: flex; flex-direction: column;
+            font-family: 'Noto Sans KR', sans-serif; color: #333; background: var(--bg-gray); line-height: 1.6;
         }
+        h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
 
-        /* [1] Header */
+        /* --- [2. 상단바 (링크 디자인 복제)] --- */
         header {
-            height: var(--header-height); flex-shrink: 0;
-            background: var(--dark-navy); color: white;
-            display: flex; align-items: center; padding: 0 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 10;
+            background: var(--dark-navy); position: fixed; top: 0; width: 100%; z-index: 1000;
+            height: 70px; display: flex; align-items: center; padding: 0 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
-        .logo { font-weight: 900; font-size: 1.2rem; margin-right: auto; }
+        .logo { font-weight: 900; font-size: 1.3rem; color: white; }
         .logo span { color: var(--sk-orange); }
-        .page-title { font-family: 'Montserrat'; font-size: 0.9rem; opacity: 0.8; letter-spacing: 1px; }
+        .header-title { margin-left: auto; font-weight: 600; font-size: 0.85rem; color: rgba(255,255,255,0.7); }
 
-        /* [2] Main Layout */
-        .layout-container {
-            display: flex; height: calc(100vh - var(--header-height));
+        /* --- [3. 히어로 섹션 (링크 디자인 복제)] --- */
+        .report-hero {
+            margin-top: 70px; background: var(--dark-navy); color: white; padding: 60px 0 80px;
+            text-align: center; position: relative;
+        }
+        .report-hero h1 { font-size: 3rem; font-weight: 800; margin-bottom: 10px; position: relative; z-index: 2; }
+        .report-hero p { font-size: 1rem; opacity: 0.8; max-width: 800px; margin: 0 auto; position: relative; z-index: 2; }
+
+        /* --- [4. 전체 레이아웃 (사이드바 + 콘텐츠 영역)] --- */
+        .report-layout {
+            display: flex; gap: 40px; padding-bottom: 50px; align-items: flex-start;
+            margin-top: -40px; position: relative; z-index: 10;
         }
 
-        /* [3] Sidebar */
+        /* 좌측 사이드바 (링크 디자인 복제) */
         .sidebar {
-            width: var(--sidebar-width); flex-shrink: 0;
-            background: white; border-right: 1px solid #e0e0e0;
-            padding: 25px 20px; display: flex; flex-direction: column;
+            width: var(--sidebar-width); flex-shrink: 0; position: sticky; top: 100px;
+            background: white; padding: 25px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
-        .nav-group { margin-bottom: 20px; }
-        .nav-title { font-size: 0.75rem; font-weight: 700; color: #999; margin-bottom: 10px; text-transform: uppercase; }
-        .nav-item {
-            display: block; padding: 10px 15px; margin-bottom: 5px;
-            border-radius: 8px; font-size: 0.85rem; font-weight: 600; color: #555;
-            text-decoration: none; transition: 0.2s;
+        .sidebar-title { font-size: 0.8rem; font-weight: 700; color: #999; margin-bottom: 15px; text-transform: uppercase; }
+        .nav-links { list-style: none; }
+        .nav-links li { margin-bottom: 5px; }
+        .nav-links a {
+            display: block; padding: 12px 15px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; color: #555;
+            transition: 0.2s; text-decoration: none; border-left: 3px solid transparent;
         }
-        .nav-item.active { background: #fff5f0; color: var(--sk-orange); border-left: 3px solid var(--sk-orange); }
-        .nav-item:hover { background: #f5f5f5; }
+        .nav-links a.active, .nav-links a:hover { background: #f0fcf8; color: #00b894; border-left-color: #00b894; }
 
-        /* [4] Content Area (Grid System) */
+        /* 우측 콘텐츠 영역 (링크 디자인 복제) */
         .content-area {
-            flex-grow: 1; padding: 20px 30px;
-            display: flex; flex-direction: column;
+            flex-grow: 1; background: white; padding: 40px; border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            min-height: 700px; /* 16:9 뷰 유지를 위한 높이 설정 */
         }
-        .content-header { margin-bottom: 15px; }
-        .content-header h2 { font-size: 1.4rem; font-weight: 800; color: var(--dark-navy); margin-bottom: 5px; }
-        .content-header p { font-size: 0.85rem; color: #666; }
+        .section-header { border-bottom: 2px solid #eee; padding-bottom: 15px; margin-bottom: 25px; }
+        .section-title { font-size: 1.8rem; font-weight: 800; color: var(--dark-navy); }
 
-        /* 6-Step Grid */
-        .dashboard-grid {
+        /* --- [5. 콘텐츠 영역 내부: 원뷰(One-View) 도식 디자인] --- */
+        .strategy-dashboard {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3열 */
-            grid-template-rows: 1.3fr 0.8fr; /* 상단(내용많음) 1.3 : 하단 0.8 비율 */
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
             gap: 15px;
-            height: 100%; /* 부모 높이 꽉 채움 */
+            height: 600px; /* 콘텐츠 영역 안에서 한눈에 들어오는 높이 */
         }
 
-        /* Card Styles */
         .step-card {
-            background: white; border-radius: 12px; border: 1px solid #e0e0e0;
-            padding: 15px; display: flex; flex-direction: column;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-            position: relative; transition: 0.3s;
+            border: 1px solid #e0e0e0; border-radius: 10px; padding: 15px;
+            display: flex; flex-direction: column; gap: 8px; position: relative;
+            background: #fff; transition: 0.3s;
         }
-        .step-card:hover { border-color: var(--sk-orange); box-shadow: 0 10px 15px rgba(0,0,0,0.05); z-index: 1; }
+        .step-card:hover { border-color: var(--sk-orange); transform: translateY(-3px); }
 
-        /* Step Badge & Title */
-        .card-top { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; border-bottom: 1px solid #f0f0f0; padding-bottom: 8px; }
-        .step-badge { 
-            background: var(--dark-navy); color: white; padding: 3px 8px; 
-            border-radius: 4px; font-size: 0.75rem; font-weight: 800; 
-        }
-        .card-title { font-size: 0.95rem; font-weight: 700; color: #333; }
+        /* 카드 헤더 */
+        .card-top { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+        .badge { background: var(--dark-navy); color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 800; }
+        .card-title { font-size: 0.95rem; font-weight: 700; color: #222; }
 
-        /* Card Body Content */
-        .card-body { flex-grow: 1; display: flex; flex-direction: column; font-size: 0.85rem; color: #444; gap: 10px; }
-        
-        /* Internal Boxes (For Risks/Opps) */
-        .classification-box {
-            display: flex; gap: 8px;
-        }
-        .class-col {
-            flex: 1; background: #fffcf8; border: 1px solid #ffe8cc; border-radius: 6px; padding: 8px;
-            display: flex; flex-direction: column; gap: 4px;
-        }
-        .class-title { font-size: 0.75rem; font-weight: 700; color: var(--sk-orange); text-align: center; margin-bottom: 2px; }
-        .class-item { font-size: 0.7rem; background: white; padding: 3px 6px; border-radius: 3px; border: 1px solid #eee; text-align: center; }
+        /* 이미지 상세 내용 반영 (박스형) */
+        .info-box { background: #f9f9f9; border-radius: 6px; padding: 10px; font-size: 0.8rem; }
+        .info-box-split { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+        .sub-box { background: white; border: 1px solid #eee; padding: 5px; border-radius: 4px; text-align: center; }
+        .sub-label { font-size: 0.65rem; font-weight: 700; color: var(--sk-orange); margin-bottom: 2px; }
 
-        /* Process Note (Gray Box from Image) */
+        /* 이미지 우측 회색 박스 내용 통합 (Process Note) */
         .process-note {
-            background: #f7f9fc; border-radius: 6px; padding: 10px;
-            margin-top: auto; /* 카드 하단 고정 */
-            border-left: 3px solid #cbd5e0;
+            margin-top: auto; background: #f0f2f5; border-radius: 6px; padding: 8px; font-size: 0.75rem;
+            border-left: 3px solid #ccc; line-height: 1.3;
         }
-        .note-title { font-size: 0.7rem; font-weight: 700; color: #666; margin-bottom: 5px; display: block; }
-        .note-list { list-style: none; padding: 0; margin: 0; }
-        .note-list li { 
-            font-size: 0.75rem; color: #555; position: relative; padding-left: 8px; margin-bottom: 2px; line-height: 1.3;
-        }
-        .note-list li::before { content: '•'; position: absolute; left: 0; color: var(--sk-orange); font-size: 0.6rem; top: 2px; }
-
-        /* Tags for Numbers */
-        .stat-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
-        .stat-tag { 
-            font-size: 0.65rem; padding: 2px 6px; border-radius: 3px; 
-            background: #fff; border: 1px solid #ddd; color: #666; 
-        }
-        .stat-tag.highlight { border-color: var(--sk-orange); color: var(--sk-orange); background: #fff5f0; font-weight: 700; }
-
-        /* Step 4,5,6 Specifics */
-        .center-content {
-            display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            text-align: center; height: 100%; gap: 10px;
-        }
-        .step-icon { font-size: 1.5rem; color: #ddd; margin-bottom: 5px; }
-        .step-main-text { font-size: 0.9rem; font-weight: 600; color: var(--dark-navy); }
-        .step-sub-text { font-size: 0.8rem; color: #666; }
-
-        /* Final Step Highlight */
-        .final-card { background: linear-gradient(135deg, #fff, #fff5f0); border-color: #ffd8b3; }
-        .final-card .step-badge { background: var(--sk-orange); }
-        .final-card .step-icon { color: var(--sk-orange); }
-
-        /* Arrows between cards (Optional, simplified for clean look) */
-        .step-card::after {
-            content: '→'; position: absolute; right: -13px; top: 50%; transform: translateY(-50%);
-            color: #ccc; font-weight: 800; z-index: 2; background: var(--bg-body);
-        }
-        /* Remove arrows for last column and handle row breaks */
-        .step-card:nth-child(3)::after, .step-card:nth-child(6)::after { display: none; }
+        .note-tag { font-size: 0.65rem; font-weight: 800; color: #777; margin-bottom: 2px; display: block; }
         
-        /* Mobile Responsive */
-        @media (max-width: 1024px) {
-            body { height: auto; overflow: auto; }
-            .layout-container { height: auto; flex-direction: column; }
-            .sidebar { width: 100%; border-right: none; border-bottom: 1px solid #e0e0e0; }
-            .dashboard-grid { display: flex; flex-direction: column; height: auto; }
-            .step-card::after { content: '↓'; right: 50%; top: auto; bottom: -15px; transform: translateX(50%); }
+        /* 화살표 표시 */
+        .step-card:not(:nth-child(3n))::after {
+            content: '\f054'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+            position: absolute; right: -12px; top: 50%; transform: translateY(-50%);
+            color: #ddd; font-size: 0.8rem; z-index: 2;
+        }
+
+        /* 6단계 강조 */
+        .step-6 { background: #fffcf8; border-color: #ffe8cc; }
+        .step-6 .badge { background: var(--sk-orange); }
+
+        /* 수치 강조 태그 */
+        .stat { color: var(--sk-red); font-weight: 700; }
+
+        @media (max-width: 1100px) {
+            .strategy-dashboard { grid-template-columns: 1fr 1fr; grid-template-rows: auto; height: auto; }
+            .report-layout { flex-direction: column; }
+            .sidebar { width: 100%; position: relative; top: 0; }
         }
     </style>
 </head>
@@ -164,146 +131,87 @@
 
     <header>
         <div class="logo">SK <span>Inc.</span></div>
-        <div class="page-title">2026 TCFD STRATEGY FRAMEWORK</div>
+        <div class="header-title">2026 TCFD REPORT</div>
     </header>
 
-    <div class="layout-container">
+    <div class="report-hero">
+        <div class="container">
+            <h1>Strategy</h1>
+            <p>기후변화 리스크 및 기회 요인을 식별하고 비즈니스 영향 분석을 통한 대응 전략을 수립합니다.</p>
+        </div>
+    </div>
+
+    <div class="container report-layout">
+        
         <aside class="sidebar">
-            <div class="nav-group">
-                <div class="nav-title">Menu</div>
-                <a href="#" class="nav-item active">Strategy Dashboard</a>
-                <a href="#" class="nav-item">Governance</a>
-                <a href="#" class="nav-item">Risk Management</a>
-                <a href="#" class="nav-item">Metrics & Targets</a>
-            </div>
-            <div class="process-note" style="margin-top:auto;">
-                <span class="note-title">VIEW MODE</span>
-                16:9 One-View 최적화<br>
-                전체 프로세스 조망
-            </div>
+            <div class="sidebar-title">TCFD Pillars</div>
+            <ul class="nav-links">
+                <li><a href="#">01. Governance</a></li>
+                <li><a href="#" class="active">02. Strategy</a></li>
+                <li><a href="#">03. Risk Management</a></li>
+                <li><a href="#">04. Metrics & Targets</a></li>
+            </ul>
         </aside>
 
         <main class="content-area">
-            <div class="content-header">
-                <h2>Climate Strategy Process</h2>
-                <p>기후 리스크 식별부터 대응까지, 6단계 통합 프로세스 (Integrated Process Flow)</p>
+            <div class="section-header">
+                <h2 class="section-title">Climate Strategy Process</h2>
             </div>
 
-            <div class="dashboard-grid">
+            <div class="strategy-dashboard">
                 
                 <div class="step-card">
-                    <div class="card-top">
-                        <span class="step-badge">01</span>
-                        <span class="card-title">리스크 및 기회 확인</span>
+                    <div class="card-top"><span class="badge">01</span><div class="card-title">리스크 및 기회 확인</div></div>
+                    <div class="info-box-split">
+                        <div class="sub-box"><div class="sub-label">RISK</div><div style="font-size:0.7rem">전환/물리적</div></div>
+                        <div class="sub-box"><div class="sub-label">OPPORTUNITY</div><div style="font-size:0.7rem">에너지/시장</div></div>
                     </div>
-                    <div class="card-body">
-                        <div class="classification-box">
-                            <div class="class-col">
-                                <div class="class-title">RISK</div>
-                                <div class="class-item">전환 (정책,기술,시장)</div>
-                                <div class="class-item">물리적 (급성,만성)</div>
-                            </div>
-                            <div class="class-col">
-                                <div class="class-title">OPPORTUNITY</div>
-                                <div class="class-item">에너지 자원 전환</div>
-                                <div class="class-item">제품/서비스, 시장</div>
-                            </div>
-                        </div>
-                        <div class="process-note">
-                            <span class="note-title">MONITORING</span>
-                            <ul class="note-list">
-                                <li>이행 전략 모니터링 및 개선사항 분석</li>
-                                <li>리스크 식별 프로세스 및 결과 모니터링</li>
-                            </ul>
-                        </div>
+                    <div class="process-note">
+                        <span class="note-tag">MONITORING</span>
+                        이행 전략 모니터링 및 개선사항 분석을 통한 리스크 풀 상시 업데이트
                     </div>
                 </div>
 
                 <div class="step-card">
-                    <div class="card-top">
-                        <span class="step-badge">02</span>
-                        <span class="card-title">사업/포트폴리오 영향 식별</span>
-                    </div>
-                    <div class="card-body">
-                        <p>발생가능성, 심각도 등의 비즈니스 영향도 분석 지표에 따른 <strong>영향(Impact) 수준 검토</strong></p>
-                        <div class="process-note">
-                            <span class="note-title">이슈풀(ISSUE POOL) 구성</span>
-                            <ul class="note-list">
-                                <li>국내외 기후 정책/규제 분석</li>
-                                <li>기후 관련 동향 및 벤치마킹</li>
-                                <li>이해관계자 요구사항 반영</li>
-                            </ul>
-                            <div class="stat-tags">
-                                <span class="stat-tag">전환 8개</span>
-                                <span class="stat-tag">물리 2개</span>
-                                <span class="stat-tag">기회 4개</span>
-                            </div>
-                        </div>
+                    <div class="card-top"><span class="badge">02</span><div class="card-title">사업 영향 식별</div></div>
+                    <p style="font-size:0.8rem; color:#666;">발생가능성, 심각도 등 비즈니스 영향도 지표에 따른 수준 검토</p>
+                    <div class="process-note">
+                        <span class="note-tag">ISSUE POOL</span>
+                        정책 분석, 벤치마킹 반영<br>
+                        <span class="stat">전환 8, 물리 2, 기회 4개 식별</span>
                     </div>
                 </div>
 
                 <div class="step-card">
-                    <div class="card-top">
-                        <span class="step-badge">03</span>
-                        <span class="card-title">중대 리스크 및 기회 선정</span>
-                    </div>
-                    <div class="card-body">
-                        <p>검토된 영향 수준을 바탕으로 우선순위를 매겨 <strong>중대 리스크 및 기회</strong> 최종 선정</p>
-                        <div class="process-note">
-                            <span class="note-title">중대 리스크 및 기회 도출</span>
-                            <ul class="note-list">
-                                <li>사업장 Level / 포트폴리오 Level 구분</li>
-                            </ul>
-                            <div class="stat-tags" style="margin-top:8px;">
-                                <span class="stat-tag highlight">전환 3개</span>
-                                <span class="stat-tag highlight">물리 2개</span>
-                                <span class="stat-tag highlight">기회 4개</span>
-                            </div>
-                        </div>
+                    <div class="card-top"><span class="badge">03</span><div class="card-title">중대 리스크/기회 선정</div></div>
+                    <p style="font-size:0.8rem; color:#666;">영향 수준에 따른 우선순위 도출 및 최종 관리 대상 확정</p>
+                    <div class="process-note">
+                        <span class="note-tag">OUTCOME</span>
+                        사업장/포트폴리오 Level 구분<br>
+                        <span class="stat">전환 3, 물리 2, 기회 4개 도출</span>
                     </div>
                 </div>
 
                 <div class="step-card">
-                    <div class="card-top">
-                        <span class="step-badge">04</span>
-                        <span class="card-title">기후 시나리오 분석</span>
-                    </div>
-                    <div class="card-body center-content">
-                        <i class="fas fa-chart-line step-icon"></i>
-                        <div class="step-main-text">Below 1.5°C 포함 복수 시나리오 활용</div>
-                        <div class="stat-tags">
-                            <span class="stat-tag">STEPS</span>
-                            <span class="stat-tag">APS</span>
-                            <span class="stat-tag">NZE 2050</span>
-                            <span class="stat-tag">NGFS</span>
-                        </div>
+                    <div class="card-top"><span class="badge">04</span><div class="card-title">기후 시나리오 분석</div></div>
+                    <div class="info-box" style="text-align:center;">
+                        <strong>Below 1.5°C 포함 복수 활용</strong><br>
+                        <span style="font-size:0.7rem; color:#888;">STEPS, APS, NZE 2050, NGFS 등</span>
                     </div>
                 </div>
 
                 <div class="step-card">
-                    <div class="card-top">
-                        <span class="step-badge">05</span>
-                        <span class="card-title">재무영향도 분석</span>
-                    </div>
-                    <div class="card-body center-content">
-                        <i class="fas fa-file-invoice-dollar step-icon"></i>
-                        <div class="step-main-text">전환/물리적 리스크 및 기회에 대한<br>재무영향 분석</div>
-                        <div class="step-sub-text">매출, 운영비용, 자산가치 등</div>
+                    <div class="card-top"><span class="badge">05</span><div class="card-title">재무영향도 분석</div></div>
+                    <div class="info-box" style="text-align:center;">
+                        <i class="fas fa-calculator" style="color:#ccc; margin-bottom:5px;"></i><br>
+                        전환/물리적 리스크 및 기회에 대한<br><strong>재무영향(Financial Impact)</strong> 분석
                     </div>
                 </div>
 
-                <div class="step-card final-card">
-                    <div class="card-top">
-                        <span class="step-badge">06</span>
-                        <span class="card-title">대응전략</span>
-                    </div>
-                    <div class="card-body center-content">
-                        <i class="fas fa-bullseye step-icon"></i>
-                        <div class="step-main-text" style="color:var(--dark-navy);">사업 및 포트폴리오 Level<br>기후 리스크 관리 및 청정 기술 투자</div>
-                        <div class="stat-tags">
-                            <span class="stat-tag highlight">전략 추진</span>
-                            <span class="stat-tag highlight">투자 확대</span>
-                        </div>
+                <div class="step-card step-6">
+                    <div class="card-top"><span class="badge">06</span><div class="card-title">대응전략 수립</div></div>
+                    <div class="info-box" style="background:#fff; border-color:var(--sk-orange); text-align:center;">
+                        <strong>기후 리스크 관리 및<br>청정 기술 투자 확대 전략 추진</strong>
                     </div>
                 </div>
 
