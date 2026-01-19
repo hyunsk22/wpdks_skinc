@@ -2,168 +2,257 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>2026 SK ESG Report Inner Page</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>2026 SK ESG Report - Social</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     
     <style>
-        /* [1] 인쇄용 A4 설정 */
+        /* [1] 인쇄용 A4 기본 설정 (표지/이전 속지와 동일) */
         :root {
             --sk-red: #EA002C;
             --sk-orange: #F47725;
             --sk-gradient: linear-gradient(135deg, #EA002C 0%, #F47725 100%);
             --dark-navy: #0c2461;
-            --text-body: #444;
-            --bg-gray: #f9f9f9;
+            --text-main: #333;
+            --text-sub: #555;
+            --bg-light: #f4f6f8;
+            --border-color: #e0e0e0;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-print-color-adjust: exact; }
         
         body {
-            width: 210mm; height: 297mm; /* A4 규격 */
+            width: 210mm; height: 297mm;
             margin: 0 auto; background: #fff;
             font-family: 'Noto Sans KR', sans-serif;
-            position: relative; overflow: hidden; /* 인쇄 시 스크롤 방지 */
+            position: relative; overflow: hidden;
             display: flex; flex-direction: column;
         }
 
-        /* [2] 헤더 (로고 및 카테고리) */
+        /* [2] 헤더 */
         header {
-            height: 25mm; padding: 0 15mm;
-            display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 2px solid var(--sk-red); /* 포인트 라인 */
-        }
-        .header-logo { font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 1.2rem; color: var(--sk-red); }
-        .header-category { font-family: 'Montserrat', sans-serif; font-size: 0.9rem; color: #888; font-weight: 600; text-transform: uppercase; }
-
-        /* [3] 본문 컨텐츠 영역 */
-        .content {
-            padding: 15mm 15mm 10mm 15mm;
-            flex-grow: 1;
-        }
-
-        /* 타이틀 섹션 */
-        .page-title {
-            font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 2.5rem;
-            color: var(--dark-navy); margin-bottom: 5mm; line-height: 1.2;
-        }
-        .page-subtitle {
-            font-size: 1.1rem; color: var(--sk-orange); font-weight: 700; margin-bottom: 10mm;
-            display: inline-block; border-bottom: 1px solid #eee; padding-bottom: 2mm;
-        }
-
-        /* 2단 레이아웃 (본문 텍스트) */
-        .cols {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 10mm;
-            font-size: 0.95rem; line-height: 1.7; color: var(--text-body); text-align: justify;
-        }
-        .cols p { margin-bottom: 5mm; }
-        
-        /* 강조 박스 (Highlights) */
-        .highlight-box {
-            background: var(--bg-gray); border-left: 5px solid var(--sk-orange);
-            padding: 8mm; margin: 10mm 0; border-radius: 0 10px 10px 0;
-        }
-        .highlight-box h4 { color: var(--dark-navy); font-size: 1.1rem; margin-bottom: 3mm; font-weight: 700; }
-        
-        /* 데이터 시각화 (차트 예시) */
-        .chart-section {
-            margin-top: 10mm; padding: 8mm;
-            border: 1px solid #eee; border-radius: 10px;
-        }
-        .chart-title { font-weight: 700; color: var(--dark-navy); margin-bottom: 5mm; display:flex; align-items:center; gap:5px;}
-        
-        /* CSS로 만든 간단한 막대 그래프 */
-        .bar-chart { display: flex; flex-direction: column; gap: 4mm; }
-        .bar-row { display: flex; align-items: center; font-size: 0.85rem; }
-        .bar-label { width: 60px; font-weight: 600; }
-        .bar-track { flex-grow: 1; background: #eee; height: 10px; border-radius: 5px; margin: 0 10px; overflow: hidden; }
-        .bar-fill { height: 100%; border-radius: 5px; }
-        
-        /* SK 그라데이션 적용된 막대 */
-        .fill-1 { width: 45%; background: var(--sk-red); }
-        .fill-2 { width: 70%; background: var(--sk-orange); }
-        .fill-3 { width: 95%; background: var(--sk-gradient); }
-        .bar-value { width: 40px; text-align: right; font-weight: 700; color: var(--dark-navy); }
-
-        /* [4] 푸터 (페이지 번호) */
-        footer {
             height: 20mm; padding: 0 15mm;
-            display: flex; justify-content: space-between; align-items: center;
-            border-top: 1px solid #eee;
-            font-size: 0.8rem; color: #999;
+            display: flex; justify-content: space-between; align-items: flex-end;
+            border-bottom: 2px solid var(--sk-orange); /* 소셜은 오렌지 포인트 */
+            padding-bottom: 5mm;
         }
-        /* 푸터에도 웨이브 포인트 */
-        .footer-wave {
-            position: absolute; bottom: 0; right: 0; width: 30%; opacity: 0.1;
-            z-index: -1;
+        .header-logo { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--sk-orange); }
+        .header-category { font-family: 'Montserrat', sans-serif; font-size: 0.85rem; color: #888; font-weight: 600; letter-spacing: 1px; }
+
+        /* [3] 본문 레이아웃 */
+        .content {
+            padding: 12mm 15mm;
+            flex-grow: 1;
+            display: flex; flex-direction: column; gap: 8mm;
         }
 
+        /* 타이틀 영역 */
+        .page-header h1 {
+            font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 2.2rem;
+            color: var(--dark-navy); line-height: 1; margin-bottom: 3mm;
+        }
+        .page-header p {
+            font-size: 1rem; color: var(--text-sub); font-weight: 500;
+            border-left: 4px solid var(--sk-orange); padding-left: 4mm;
+        }
+
+        /* 섹션 공통 스타일 */
+        .section-title {
+            font-size: 1.1rem; font-weight: 700; color: var(--dark-navy);
+            margin-bottom: 4mm; display: flex; align-items: center; gap: 2mm;
+        }
+        .section-title::before { content: ''; width: 6px; height: 6px; background: var(--sk-red); display: block; }
+        
+        .box-container {
+            background: var(--bg-light); border-radius: 8px; padding: 6mm;
+            font-size: 0.9rem; line-height: 1.6; color: var(--text-main);
+            text-align: justify;
+        }
+
+        /* 인권 경영 프로세스 (도표 시각화) */
+        .process-flow {
+            display: flex; justify-content: space-between; align-items: stretch;
+            gap: 2mm; margin-top: 2mm;
+        }
+        .process-step {
+            flex: 1; background: white; border: 1px solid var(--border-color);
+            border-radius: 6px; padding: 4mm; position: relative;
+            display: flex; flex-direction: column; gap: 2mm;
+        }
+        .process-step h4 { font-size: 0.85rem; color: var(--sk-orange); font-weight: 700; }
+        .process-step p { font-size: 0.75rem; color: #666; line-height: 1.4; }
+        
+        /* 화살표 */
+        .process-step:not(:last-child)::after {
+            content: '▶'; position: absolute; right: -4mm; top: 40%; transform: translateY(-50%);
+            color: #ccc; font-size: 0.8rem; z-index: 1;
+        }
+
+        /* 2단 그리드 (원칙 & 고충처리) */
+        .grid-2col {
+            display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 8mm;
+        }
+        
+        /* 원칙 리스트 스타일 */
+        .principles-list { list-style: none; font-size: 0.9rem; }
+        .principles-list li {
+            margin-bottom: 3mm; padding-left: 5mm; position: relative;
+            color: var(--text-sub);
+        }
+        .principles-list li::before {
+            content: '•'; color: var(--sk-red); font-weight: bold;
+            position: absolute; left: 0;
+        }
+        .principles-list strong { color: var(--dark-navy); font-weight: 700; }
+
+        /* 고충처리 채널 박스 */
+        .grievance-box {
+            background: var(--dark-navy); color: white; padding: 6mm; border-radius: 8px;
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .grievance-box h4 { font-family: 'Montserrat', sans-serif; font-size: 1.1rem; margin-bottom: 2mm; color: var(--sk-orange); }
+        .grievance-box p { font-size: 0.85rem; opacity: 0.8; margin-bottom: 4mm; }
+        .contact-info {
+            background: rgba(255,255,255,0.1); padding: 3mm; border-radius: 4px;
+            font-size: 0.8rem; text-align: center; font-weight: 600;
+        }
+
+        /* 취약계층 아이콘 영역 */
+        .vulnerable-groups {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 4mm;
+        }
+        .group-item {
+            border: 1px solid var(--border-color); border-radius: 6px; padding: 3mm;
+            text-align: center;
+        }
+        .group-icon { font-size: 1.5rem; margin-bottom: 2mm; display: block; }
+        .group-name { font-size: 0.8rem; font-weight: 700; color: var(--dark-navy); }
+
+        /* [4] 푸터 */
+        footer {
+            height: 15mm; padding: 0 15mm;
+            border-top: 1px solid #eee;
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.75rem; color: #aaa;
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="header-logo">SK <span style="color:#333; font-weight:400;">Inc.</span></div>
-        <div class="header-category">Environmental Pillar</div>
+        <div class="header-logo">SK <span style="font-weight:400; color:#333;">Inc.</span></div>
+        <div class="header-category">SOCIAL PILLAR</div>
     </header>
 
     <div class="content">
-        <h1 class="page-title">Net Zero 2040<br>Acceleration</h1>
-        <div class="page-subtitle">Renewable Energy 100% Transition Plan</div>
-
-        <div class="highlight-box">
-            <h4>Key Takeaway</h4>
-            <p style="margin:0;">
-                SK주식회사는 2026년까지 재생에너지 전환율을 60%까지 끌어올리며, 
-                글로벌 넷제로 목표 시점인 2050년보다 10년 앞당긴 <strong>2040년 조기 달성</strong>을 목표로 합니다.
+        
+        <div class="page-header">
+            <h1>Human Rights<br>Management</h1>
+            <p>
+                SK주식회사는 모든 이해관계자의 인권을 존중하며,<br>
+                유엔글로벌콤팩트(UNGC) 10대 원칙 및 국제 인권 기준을 준수합니다.
             </p>
         </div>
 
-        <div class="cols">
-            <div>
-                <p>
-                    <strong>전략적 배경</strong><br>
-                    기후 위기는 더 이상 미래의 문제가 아닌 현재의 생존 문제입니다. 우리는 직접 배출량(Scope 1)뿐만 아니라 간접 배출량(Scope 2)까지 포함하는 포괄적인 탄소 감축 로드맵을 수립하였습니다. 이는 글로벌 이니셔티브인 RE100 가입을 넘어선 선제적인 조치입니다.
+        <div>
+            <div class="section-title">Human Rights Due Diligence Process</div>
+            <div class="box-container" style="background: white; padding:0;">
+                <p style="font-size:0.9rem; margin-bottom:3mm; color:#666;">
+                    우리는 인권 리스크를 사전에 식별하고 예방하기 위해 체계적인 인권 실사 프로세스를 운영합니다.
                 </p>
-                <p>
-                    이를 위해 수소 밸류체인 구축, 친환경 소재 개발 등 Green Portfolio를 대폭 확대하고 있으며, 기존의 탄소 다배출 사업 영역은 저탄소 공정으로 전환하는 Deep Change를 실행하고 있습니다.
-                </p>
-            </div>
-            <div>
-                <p>
-                    <strong>2026년 주요 성과</strong><br>
-                    올해 우리는 태양광 및 풍력 등 재생에너지 전력 구매 계약(PPA)을 대폭 확대하여 전년 대비 온실가스 배출량을 45% 감축하는 성과를 거두었습니다.
-                </p>
-                <div class="chart-section">
-                    <div class="chart-title">📊 CO2 Reduction Progress</div>
-                    <div class="bar-chart">
-                        <div class="bar-row">
-                            <span class="bar-label">2024</span>
-                            <div class="bar-track"><div class="bar-fill fill-1"></div></div>
-                            <span class="bar-value">45%</span>
-                        </div>
-                        <div class="bar-row">
-                            <span class="bar-label">2025</span>
-                            <div class="bar-track"><div class="bar-fill fill-2"></div></div>
-                            <span class="bar-value">70%</span>
-                        </div>
-                        <div class="bar-row">
-                            <span class="bar-label">2026</span>
-                            <div class="bar-track"><div class="bar-fill fill-3"></div></div>
-                            <span class="bar-value">95%</span>
-                        </div>
+                <div class="process-flow">
+                    <div class="process-step" style="border-top: 3px solid var(--sk-red);">
+                        <h4>STEP 1<br>Policy Declaration</h4>
+                        <p>인권 경영 선언 및<br>가이드라인 배포</p>
+                    </div>
+                    <div class="process-step" style="border-top: 3px solid var(--sk-orange);">
+                        <h4>STEP 2<br>Impact Assessment</h4>
+                        <p>잠재적 인권 리스크<br>평가 및 식별</p>
+                    </div>
+                    <div class="process-step" style="border-top: 3px solid var(--sk-red);">
+                        <h4>STEP 3<br>Mitigation Action</h4>
+                        <p>식별된 리스크<br>완화 및 개선 조치</p>
+                    </div>
+                    <div class="process-step" style="border-top: 3px solid var(--sk-orange);">
+                        <h4>STEP 4<br>Monitoring & Report</h4>
+                        <p>이행 현황 점검 및<br>보고서 공개</p>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="grid-2col">
+            
+            <div>
+                <div class="section-title">Key Principles</div>
+                <div class="box-container">
+                    <ul class="principles-list">
+                        <li>
+                            <strong>차별 금지 (Non-Discrimination)</strong><br>
+                            성별, 인종, 장애, 종교 등에 따른 고용 상의 불합리한 차별을 엄격히 금지합니다.
+                        </li>
+                        <li>
+                            <strong>강제 노동 및 아동 노동 금지</strong><br>
+                            ILO 핵심 협약을 준수하여 모든 형태의 강제 노동과 아동 노동을 금지합니다.
+                        </li>
+                        <li>
+                            <strong>산업 안전 보장</strong><br>
+                            구성원이 안전하고 쾌적한 환경에서 근무할 수 있도록 SHE(Safety, Health, Env) 시스템을 강화합니다.
+                        </li>
+                        <li>
+                            <strong>개인정보 보호</strong><br>
+                            고객 및 임직원의 개인정보를 철저히 보호하고 정보 보안 리스크를 관리합니다.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div>
+                <div class="section-title">Grievance Channel</div>
+                <div class="grievance-box">
+                    <div>
+                        <h4>Ethical Management<br>Counseling Center</h4>
+                        <p>
+                            인권 침해 및 비윤리적 행위에 대한 제보 채널을 운영하며, 제보자의 신원을 철저히 보호합니다.
+                        </p>
+                    </div>
+                    <div class="contact-info">
+                        Web: ethics.sk.co.kr<br>
+                        Email: sk.ethics@sk.com
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="section-title">Focus on Vulnerable Groups</div>
+            <div class="vulnerable-groups">
+                <div class="group-item">
+                    <span class="group-icon">👩‍💻</span>
+                    <span class="group-name">Women</span>
+                    <div style="font-size:0.7rem; color:#888; margin-top:2px;">여성 리더십 강화</div>
+                </div>
+                <div class="group-item">
+                    <span class="group-icon">♿</span>
+                    <span class="group-name">Disabled</span>
+                    <div style="font-size:0.7rem; color:#888; margin-top:2px;">장애인 고용 확대</div>
+                </div>
+                <div class="group-item">
+                    <span class="group-icon">👶</span>
+                    <span class="group-name">Children</span>
+                    <div style="font-size:0.7rem; color:#888; margin-top:2px;">아동 권리 보호</div>
+                </div>
+                <div class="group-item">
+                    <span class="group-icon">🤝</span>
+                    <span class="group-name">Partners</span>
+                    <div style="font-size:0.7rem; color:#888; margin-top:2px;">협력사 인권 지원</div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <footer>
-        <div>2026 Sustainability Report</div>
-        <div><strong>04</strong></div>
-        
-        <img src="https://raw.githubusercontent.com/google/material-design-icons/master/png/image/filter_hdr/materialicons/24dp/2x/baseline_filter_hdr_black_24dp.png" 
-             style="position:absolute; bottom:-50px; right:-20px; width:300px; height:300px; opacity:0.03; transform:rotate(-15deg); pointer-events:none;" 
-             alt="bg-deco">
+        <div>2026 Sustainability Report - Social Performance</div>
+        <div><strong>28</strong></div>
     </footer>
 
 </body>
