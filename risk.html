@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 SK Risk Management Report</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- [기본 설정 및 변수] --- */
+        :root {
+            --sk-red: #EA002C;
+            --sk-orange: #F47725;
+            --sk-gradient: linear-gradient(135deg, #EA002C, #F47725);
+            --dark-navy: #0c2461;
+            --bg-light: #f4f7fc;
+            --text-main: #333;
+            --text-sub: #666;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            color: var(--text-main); background: #fff;
+            line-height: 1.6;
+        }
+        h1, h2, h3 { font-family: 'Montserrat', sans-serif; }
+        .container { width: 90%; max-width: 1400px; margin: 0 auto; }
+        .section-padding { padding: 100px 0; }
+        .text-gradient { background: var(--sk-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* --- [1] Hero Section --- */
+        .risk-hero {
+            background: var(--dark-navy); color: white; padding: 120px 0 80px;
+            text-align: center; background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop'); background-size: cover; background-blend-mode: multiply;
+        }
+        .risk-hero h1 { font-size: 3.5rem; font-weight: 800; margin-bottom: 20px; }
+        .risk-hero p { font-size: 1.2rem; opacity: 0.8; max-width: 700px; margin: 0 auto; }
+
+        /* --- [2] Governance Structure (조직도 시각화) --- */
+        .governance-section { background: #fff; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header h2 { font-size: 2.5rem; color: var(--dark-navy); margin-bottom: 10px; }
+        .section-header p { color: var(--text-sub); }
+
+        /* 조직도 트리 구조 */
+        .org-chart {
+            display: flex; flex-direction: column; align-items: center; gap: 40px; position: relative;
+        }
+        /* 연결선 그리기 */
+        .org-level { display: flex; justify-content: center; gap: 30px; position: relative; }
+        .org-level::after { /* 수평 연결선 */
+            content: ''; position: absolute; top: -20px; left: 25%; width: 50%; height: 2px; background: #ddd; z-index: 0;
+        }
+        .org-level:first-child::after { display: none; } /* 첫 번째 줄은 수평선 없음 */
+
+        .org-box {
+            background: white; border: 2px solid #eee; border-radius: 12px; padding: 25px;
+            text-align: center; width: 280px; position: relative; z-index: 1;
+            transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .org-box:hover {
+            border-color: var(--sk-orange); transform: translateY(-5px); box-shadow: 0 15px 30px rgba(244, 119, 37, 0.2);
+        }
+        /* 수직 연결선 */
+        .org-box::before {
+            content: ''; position: absolute; top: -22px; left: 50%; width: 2px; height: 20px; background: #ddd;
+        }
+        .top-level .org-box::before { display: none; } /* 최상위는 수직선 없음 */
+
+        .org-icon { font-size: 2rem; color: var(--sk-red); margin-bottom: 15px; }
+        .org-title { font-weight: 700; font-size: 1.2rem; color: var(--dark-navy); margin-bottom: 10px; }
+        .org-desc { font-size: 0.9rem; color: var(--text-sub); }
+
+        /* 하이라이트 박스 (최상위 기관) */
+        .highlight-box { background: var(--sk-gradient); color: white; border: none; }
+        .highlight-box .org-icon, .highlight-box .org-title, .highlight-box .org-desc { color: white; }
+
+        /* --- [3] Risk Identification (탭형 카드 구성) --- */
+        .identification-section { background: var(--bg-light); }
+        .risk-type-container {
+            display: flex; gap: 40px;
+        }
+        .risk-panel {
+            flex: 1; background: white; border-radius: 20px; overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+        .panel-header {
+            padding: 25px; color: white; font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 15px;
+        }
+        .header-financial { background: linear-gradient(to right, var(--sk-red), var(--sk-orange)); }
+        .header-nonfinancial { background: var(--dark-navy); }
+        
+        .panel-body { padding: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .risk-item {
+            display: flex; align-items: center; gap: 15px; pading: 15px; border-radius: 10px; background: #f9f9f9;
+        }
+        .risk-item i { font-size: 1.5rem; color: var(--sk-orange); width: 40px; text-align: center; }
+        .risk-item span { font-weight: 600; color: var(--text-main); }
+
+        /* --- [4] Risk Management Process (단계별 흐름도) --- */
+        .process-section { background: #fff; }
+        .steps-container { display: flex; justify-content: space-between; margin-top: 50px; }
+        .step-card {
+            flex: 1; text-align: center; padding: 30px 20px; position: relative;
+            border-bottom: 3px solid transparent; transition: 0.3s;
+        }
+        .step-card:hover { border-bottom-color: var(--sk-red); }
+        
+        /* 화살표 표시 */
+        .step-card:not(:last-child)::after {
+            content: '\f061'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+            position: absolute; right: -20px; top: 40%; font-size: 1.5rem; color: #ddd; z-index: 1;
+        }
+
+        .step-num { font-size: 3rem; font-weight: 900; color: #eee; position: absolute; top: 0; left: 20px; z-index: -1; }
+        .step-icon { font-size: 2.5rem; color: var(--sk-gradient); margin-bottom: 20px; display: inline-block; background: -webkit-linear-gradient(135deg, #EA002C, #F47725); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .step-title { font-size: 1.3rem; font-weight: 700; color: var(--dark-navy); margin-bottom: 15px; }
+        .step-desc { font-size: 0.95rem; color: var(--text-sub); padding: 0 10px; }
+
+        /* 반응형 처리 */
+        @media (max-width: 1024px) {
+            .org-level::after { display: none; } /* 모바일에서 연결선 숨김 */
+            .org-box::before { display: none; }
+            .risk-type-container { flex-direction: column; }
+            .steps-container { flex-direction: column; gap: 30px; }
+            .step-card:not(:last-child)::after { content: '\f063'; right: 50%; top: auto; bottom: -30px; transform: translateX(50%); } /* 화살표 아래로 */
+        }
+    </style>
+</head>
+<body>
+
+    <section class="risk-hero">
+        <div class="container">
+            <h1>INTEGRATED<br><span class="text-gradient">RISK MANAGEMENT</span></h1>
+            <p>SK주식회사는 불확실한 경영 환경 속에서도 지속가능한 성장을 위해<br>전사적이고 통합적인 리스크 관리 체계를 운영합니다.</p>
+        </div>
+    </section>
+
+    <section class="section-padding governance-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Risk Governance Framework</h2>
+                <p>이사회부터 실무 조직까지 연결된 견고한 리스크 관리 감독 체계</p>
+            </div>
+
+            <div class="org-chart">
+                <div class="org-level top-level">
+                    <div class="org-box highlight-box">
+                        <div class="org-icon"><i class="fas fa-landmark"></i></div>
+                        <div class="org-title">Board of Directors</div>
+                        <div class="org-desc">리스크 관리 감독 및 최종 의사결정 기구</div>
+                    </div>
+                </div>
+                
+                <div class="org-level">
+                    <div class="org-box">
+                        <div class="org-icon"><i class="fas fa-users-cog"></i></div>
+                        <div class="org-title">ESG Committee</div>
+                        <div class="org-desc">전사 리스크 관리 정책 검토 및 승인</div>
+                    </div>
+                </div>
+
+                <div class="org-level">
+                    <div class="org-box" style="border-color:var(--sk-red);">
+                        <div class="org-icon"><i class="fas fa-user-shield"></i></div>
+                        <div class="org-title">Management (CEO/CRO)</div>
+                        <div class="org-desc">리스크 관리 총괄 책임 및 대응 지휘</div>
+                    </div>
+                </div>
+
+                 <div class="org-level" style="gap: 20px;">
+                    <div class="org-box" style="width:220px; padding:15px;">
+                        <div class="org-title" style="font-size:1rem; margin-bottom:5px;">재무/기획 부서</div>
+                        <div class="org-desc" style="font-size:0.8rem;">재무적 리스크 관리</div>
+                    </div>
+                    <div class="org-box" style="width:220px; padding:15px;">
+                        <div class="org-title" style="font-size:1rem; margin-bottom:5px;">ESG/법무 부서</div>
+                        <div class="org-desc" style="font-size:0.8rem;">비재무적 리스크 관리</div>
+                    </div>
+                    <div class="org-box" style="width:220px; padding:15px;">
+                        <div class="org-title" style="font-size:1rem; margin-bottom:5px;">사업 부서</div>
+                        <div class="org-desc" style="font-size:0.8rem;">운영 리스크 1차 대응</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding identification-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Risk Identification & Classification</h2>
+                <p>재무 및 비재무 영역을 포괄하는 통합적 리스크 식별</p>
+            </div>
+
+            <div class="risk-type-container">
+                <div class="risk-panel">
+                    <div class="panel-header header-financial">
+                        <i class="fas fa-coins"></i> Financial Risks
+                    </div>
+                    <div class="panel-body">
+                        <div class="risk-item"><i class="fas fa-chart-line"></i><span>시장 변동성</span></div>
+                        <div class="risk-item"><i class="fas fa-hand-holding-usd"></i><span>유동성 리스크</span></div>
+                        <div class="risk-item"><i class="fas fa-credit-card"></i><span>신용 리스크</span></div>
+                        <div class="risk-item"><i class="fas fa-exchange-alt"></i><span>환율 리스크</span></div>
+                    </div>
+                </div>
+
+                <div class="risk-panel">
+                    <div class="panel-header header-nonfinancial">
+                        <i class="fas fa-globe-americas"></i> Non-Financial (ESG) Risks
+                    </div>
+                    <div class="panel-body">
+                        <div class="risk-item"><i class="fas fa-temperature-high"></i><span>기후변화/환경 규제</span></div>
+                        <div class="risk-item"><i class="fas fa-users"></i><span>인적자원/안전보건</span></div>
+                        <div class="risk-item"><i class="fas fa-gavel"></i><span>법규 준수/컴플라이언스</span></div>
+                        <div class="risk-item"><i class="fas fa-shield-alt"></i><span>정보보안/개인정보</span></div>
+                        <div class="risk-item"><i class="fas fa-bullhorn"></i><span>평판 리스크</span></div>
+                        <div class="risk-item"><i class="fas fa-virus"></i><span>신종 감염병 (Emerging)</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding process-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Management Process</h2>
+                <p>체계적인 4단계 리스크 관리 프로세스</p>
+            </div>
+
+            <div class="steps-container">
+                <div class="step-card">
+                    <div class="step-num">01</div>
+                    <i class="step-icon fas fa-search-location"></i>
+                    <h3 class="step-title">Identify</h3>
+                    <p class="step-desc">대내외 환경 분석을 통한 잠재 리스크 요인 식별 및 Pool 구축</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">02</div>
+                    <i class="step-icon fas fa-balance-scale-right"></i>
+                    <h3 class="step-title">Assess</h3>
+                    <p class="step-desc">발생 가능성 및 재무/비재무적 영향도를 고려한 중요도 평가</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">03</div>
+                    <i class="step-icon fas fa-tasks"></i>
+                    <h3 class="step-title">Respond</h3>
+                    <p class="step-desc">리스크 유형별 완화(Mitigation) 계획 수립 및 실행</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">04</div>
+                    <i class="step-icon fas fa-chart-pie"></i>
+                    <h3 class="step-title">Monitor</h3>
+                    <p class="step-desc">핵심 리스크 지표(KRI) 상시 모니터링 및 이사회 보고</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>
