@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 SK Integrated Risk Management Report</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- [변수 설정] --- */
+        :root {
+            --sk-red: #EA002C;
+            --sk-orange: #F47725;
+            --sk-gradient: linear-gradient(135deg, #EA002C, #F47725);
+            --dark-navy: #0c2461; /* 요청하신 메인 다크 컬러 */
+            --bg-gray: #f4f7fc;
+            --sidebar-width: 260px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            color: #333; background: var(--bg-gray);
+            line-height: 1.6;
+        }
+        h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; }
+        
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+
+        /* --- [1] Header (다크 네이비 배경 + 오렌지 포인트) --- */
+        header {
+            background: var(--dark-navy); /* 배경색 변경 */
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            height: 70px; display: flex; align-items: center; padding: 0 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .logo { font-weight: 900; font-size: 1.3rem; color: white; letter-spacing: -0.5px; }
+        .logo span { color: var(--sk-orange); } /* 오렌지 포인트 */
+        
+        .header-title {
+            margin-left: auto; font-weight: 600; font-size: 0.85rem; 
+            color: rgba(255,255,255,0.7); letter-spacing: 1px;
+        }
+
+        /* --- [2] Hero Section (다크 네이비 연결) --- */
+        .report-hero {
+            margin-top: 70px; /* 헤더 높이만큼 띄움 */
+            background: var(--dark-navy); color: white; padding: 100px 0 120px;
+            text-align: center;
+            position: relative;
+        }
+        /* 배경에 은은한 패턴 추가 */
+        .report-hero::after {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(circle at 80% 20%, rgba(244, 119, 37, 0.15), transparent 40%);
+        }
+        .report-hero h1 { font-size: 3.5rem; font-weight: 800; margin-bottom: 15px; position: relative; z-index: 2; }
+        .report-hero p { font-size: 1.1rem; opacity: 0.8; max-width: 800px; margin: 0 auto; position: relative; z-index: 2; font-weight: 300; }
+
+        /* --- [3] Layout --- */
+        .report-layout {
+            display: flex; gap: 50px; padding: 0 0 80px; align-items: flex-start;
+            margin-top: -60px; /* 히어로 섹션 위로 겹치게 */
+            position: relative; z-index: 10;
+        }
+
+        /* Sticky Sidebar */
+        .sidebar {
+            width: var(--sidebar-width); flex-shrink: 0;
+            position: sticky; top: 100px;
+            background: white; padding: 25px; border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .sidebar-title { font-size: 0.8rem; font-weight: 700; color: #999; margin-bottom: 15px; text-transform: uppercase; }
+        .nav-links { list-style: none; }
+        .nav-links li { margin-bottom: 5px; }
+        .nav-links a {
+            display: block; padding: 12px 15px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; color: #555;
+            transition: 0.2s; text-decoration: none; border-left: 3px solid transparent;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            background: #fff5f0; color: var(--sk-red); border-left-color: var(--sk-red);
+        }
+
+        /* Main Content */
+        .content-area { flex-grow: 1; background: white; padding: 60px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        
+        section { margin-bottom: 80px; scroll-margin-top: 100px; }
+        .section-header {
+            border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 30px;
+        }
+        .section-title { font-size: 2.2rem; font-weight: 800; color: var(--dark-navy); margin-bottom: 10px; }
+        .section-desc { color: #666; font-size: 1rem; }
+
+        /* --- [핵심 기능 1: 주요 리스크 완화 (Key Mitigation)] --- */
+        /* 텍스트 나열 대신 카드 그리드로 변경 */
+        .mitigation-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px;
+        }
+        .risk-card {
+            border: 1px solid #e0e0e0; border-radius: 12px; overflow: hidden;
+            transition: 0.3s; background: #fff;
+        }
+        .risk-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); border-color: var(--sk-orange); }
+        
+        .risk-card-header {
+            padding: 20px; background: #f9f9f9; border-bottom: 1px solid #eee;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .risk-icon { 
+            width: 40px; height: 40px; background: white; border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center;
+            color: var(--sk-red); font-size: 1.2rem; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .risk-name { font-weight: 700; color: var(--dark-navy); font-size: 1.1rem; }
+        
+        .risk-body { padding: 25px; }
+        .risk-context { font-size: 0.9rem; color: #666; margin-bottom: 15px; line-height: 1.5; }
+        .mitigation-box {
+            background: #fff5f0; padding: 15px; border-radius: 8px;
+            border-left: 3px solid var(--sk-orange);
+        }
+        .mitigation-title { font-size: 0.8rem; font-weight: 800; color: var(--sk-orange); margin-bottom: 5px; text-transform: uppercase; }
+        .mitigation-text { font-size: 0.9rem; font-weight: 600; color: #333; }
+
+        /* --- [핵심 기능 2: Emerging Risk (시각화)] --- */
+        .emerging-wrapper {
+            display: flex; flex-direction: column; gap: 30px;
+        }
+        .trend-card {
+            display: flex; border: 1px solid #eee; border-radius: 16px; overflow: hidden;
+        }
+        .trend-visual {
+            width: 30%; background: var(--dark-navy); color: white;
+            padding: 40px 30px; display: flex; flex-direction: column; justify-content: center;
+            position: relative;
+        }
+        .trend-visual::after { /* 장식용 원 */
+            content: ''; position: absolute; top: -50px; right: -50px; width: 150px; height: 150px;
+            background: rgba(255,255,255,0.1); border-radius: 50%;
+        }
+        .trend-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 10px; line-height: 1.2; }
+        .trend-tag { 
+            background: var(--sk-orange); color: white; padding: 4px 10px; border-radius: 20px; 
+            font-size: 0.75rem; font-weight: 700; width: fit-content; margin-bottom: 15px;
+        }
+        
+        .trend-content { width: 70%; padding: 40px; background: #fff; }
+        .impact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .impact-item h5 { font-size: 0.9rem; color: #999; margin-bottom: 8px; font-weight: 600; }
+        .impact-item p { font-size: 0.95rem; color: #333; font-weight: 500; }
+
+        /* --- [기타 스타일] --- */
+        .process-flow { display: flex; justify-content: space-between; margin: 40px 0; gap: 20px; }
+        .p-step { flex: 1; text-align: center; position: relative; }
+        .p-icon { font-size: 2rem; color: var(--sk-gradient); margin-bottom: 15px; display: inline-block; background: -webkit-linear-gradient(135deg, #EA002C, #F47725); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
+        .p-title { font-weight: 700; margin-bottom: 10px; }
+        .p-desc { font-size: 0.85rem; color: #666; }
+        
+        /* 반응형 */
+        @media (max-width: 1024px) {
+            .report-layout { flex-direction: column; margin-top: 0; }
+            .sidebar { width: 100%; position: relative; top: 0; margin-bottom: 30px; z-index: 1; }
+            .mitigation-grid { grid-template-columns: 1fr; }
+            .trend-card { flex-direction: column; }
+            .trend-visual { width: 100%; padding: 30px; }
+            .trend-content { width: 100%; padding: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">SK <span>Inc.</span></div>
+        <div class="header-title">2026 INTEGRATED RISK MANAGEMENT</div>
+    </header>
+
+    <div class="report-hero">
+        <div class="container">
+            <h1>Risk Management Report</h1>
+            <p>선제적 리스크 식별과 통합적 대응을 통해<br>지속가능한 기업 가치를 창출합니다.</p>
+        </div>
+    </div>
+
+    <div class="container report-layout">
+        
+        <aside class="sidebar">
+            <div class="sidebar-title">Contents</div>
+            <ul class="nav-links">
+                <li><a href="#governance">01. Risk Governance</a></li>
+                <li><a href="#process">02. Management Process</a></li>
+                <li><a href="#key-risks">03. Key Risks (2026)</a></li> <li><a href="#emerging">04. Emerging Risks</a></li> <li><a href="#culture">05. Risk Culture</a></li>
+            </ul>
+        </aside>
+
+        <main class="content-area">
+
+            <section id="governance">
+                <div class="section-header">
+                    <h2 class="section-title">Risk Governance</h2>
+                    <p class="section-desc">이사회 중심의 투명하고 독립적인 리스크 관리 체계를 운영합니다.</p>
+                </div>
+                <p>
+                    SK주식회사는 이사회를 최고 의사결정 기구로 하여, 경영진(CEO/CRO)과 현업 부서로 이어지는 <strong>3선 방어(3-Lines of Defense)</strong> 체계를 확립하였습니다. 
+                    특히 2026년부터는 ESG 위원회의 권한을 강화하여 비재무적 리스크에 대한 감독 기능을 대폭 확대하였습니다.
+                </p>
+                <div style="background:#f8f9fa; padding:20px; border-radius:10px; text-align:center; margin-top:20px;">
+                    <span style="font-weight:700; color:var(--dark-navy);">Board of Directors</span>
+                    <i class="fas fa-arrow-down" style="margin:0 10px; color:#ccc;"></i>
+                    <span style="font-weight:700; color:var(--sk-red);">CRO / Management</span>
+                    <i class="fas fa-arrow-down" style="margin:0 10px; color:#ccc;"></i>
+                    <span style="font-weight:700; color:#666;">Business Units</span>
+                </div>
+            </section>
+
+            <section id="process">
+                <div class="section-header">
+                    <h2 class="section-title">Management Process</h2>
+                    <p class="section-desc">리스크 식별부터 모니터링까지 4단계 순환 프로세스를 적용합니다.</p>
+                </div>
+                <div class="process-flow">
+                    <div class="p-step">
+                        <i class="p-icon fas fa-search"></i>
+                        <div class="p-title">Identification</div>
+                        <div class="p-desc">잠재 리스크 요인 발굴<br>& Pool 등록</div>
+                    </div>
+                    <div class="p-step">
+                        <i class="p-icon fas fa-chart-bar"></i>
+                        <div class="p-title">Assessment</div>
+                        <div class="p-desc">영향도/발생가능성 평가<br>(Risk Map)</div>
+                    </div>
+                    <div class="p-step">
+                        <i class="p-icon fas fa-shield-alt"></i>
+                        <div class="p-title">Response</div>
+                        <div class="p-desc">회피, 전가, 완화 등<br>대응 전략 실행</div>
+                    </div>
+                    <div class="p-step">
+                        <i class="p-icon fas fa-sync-alt"></i>
+                        <div class="p-title">Monitoring</div>
+                        <div class="p-desc">KRI 상시 점검 및<br>보고 체계 가동</div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="key-risks">
+                <div class="section-header">
+                    <h2 class="section-title">2026 Key Risk Identification</h2>
+                    <p class="section-desc">올해 중점적으로 관리하는 핵심 리스크와 완화 활동입니다.</p>
+                </div>
+                
+                <div class="mitigation-grid">
+                    <div class="risk-card">
+                        <div class="risk-card-header">
+                            <div class="risk-icon"><i class="fas fa-truck-loading"></i></div>
+                            <div class="risk-name">Global Supply Chain</div>
+                        </div>
+                        <div class="risk-body">
+                            <p class="risk-context">지정학적 갈등 및 자원 무기화로 인한 원자재 수급 불안정 심화.</p>
+                            <div class="mitigation-box">
+                                <div class="mitigation-title">Mitigation Action</div>
+                                <div class="mitigation-text">공급망 다변화 및 핵심 자재 재고 확보 (안전재고 +30%)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="risk-card">
+                        <div class="risk-card-header">
+                            <div class="risk-icon"><i class="fas fa-laptop-code"></i></div>
+                            <div class="risk-name">Cyber Security & AI</div>
+                        </div>
+                        <div class="risk-body">
+                            <p class="risk-context">AI 도입 확대로 인한 데이터 유출 및 알고리즘 보안 위협 증가.</p>
+                            <div class="mitigation-box">
+                                <div class="mitigation-title">Mitigation Action</div>
+                                <div class="mitigation-text">Zero Trust 보안 모델 도입 및 24/7 AI 모니터링 센터 가동</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="risk-card">
+                        <div class="risk-card-header">
+                            <div class="risk-icon"><i class="fas fa-chart-line"></i></div>
+                            <div class="risk-name">Financial Volatility</div>
+                        </div>
+                        <div class="risk-body">
+                            <p class="risk-context">고금리 장기화 및 환율 변동성에 따른 재무 부담.</p>
+                            <div class="mitigation-box">
+                                <div class="mitigation-title">Mitigation Action</div>
+                                <div class="mitigation-text">고정금리 차입 비중 확대 및 통화 스왑(Swap) 헷지 전략 실행</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="risk-card">
+                        <div class="risk-card-header">
+                            <div class="risk-icon"><i class="fas fa-leaf"></i></div>
+                            <div class="risk-name">Climate Regulation</div>
+                        </div>
+                        <div class="risk-body">
+                            <p class="risk-context">CBAM(탄소국경조정제도) 등 글로벌 환경 규제 강화.</p>
+                            <div class="mitigation-box">
+                                <div class="mitigation-title">Mitigation Action</div>
+                                <div class="mitigation-text">내부 탄소 가격제(ICP) 도입 및 저탄소 공정 전환 투자</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="emerging">
+                <div class="section-header">
+                    <h2 class="section-title">Emerging Risks</h2>
+                    <p class="section-desc">장기적 관점에서 비즈니스에 영향을 미칠 잠재 리스크를 선제적으로 정의합니다.</p>
+                </div>
+
+                <div class="emerging-wrapper">
+                    <div class="trend-card">
+                        <div class="trend-visual">
+                            <span class="trend-tag">Timeframe: 3-5 Years</span>
+                            <div class="trend-title">Greenwashing<br>Litigation</div>
+                            <div style="font-size:0.9rem; opacity:0.8;">그린워싱 소송 및 규제</div>
+                        </div>
+                        <div class="trend-content">
+                            <div class="impact-grid">
+                                <div class="impact-item">
+                                    <h5>Risk Context</h5>
+                                    <p>ESG 공시 의무화에 따라 데이터의 정확성에 대한 법적 책임이 강화되고, 그린워싱 관련 소송이 급증할 전망입니다.</p>
+                                </div>
+                                <div class="impact-item">
+                                    <h5>Strategic Response</h5>
+                                    <p style="color:var(--sk-red); font-weight:700;">Data-Driven ESG</p>
+                                    <p>AI 기반의 ESG 데이터 관리 시스템을 구축하여 공시 데이터의 정합성을 100% 검증하고, 제3자 검증을 의무화합니다.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="trend-card">
+                        <div class="trend-visual" style="background:var(--sk-orange);">
+                            <span class="trend-tag" style="background:var(--dark-navy);">Timeframe: 5-10 Years</span>
+                            <div class="trend-title">Biodiversity<br>Loss</div>
+                            <div style="font-size:0.9rem; opacity:0.9;">생물다양성 손실</div>
+                        </div>
+                        <div class="trend-content">
+                            <div class="impact-grid">
+                                <div class="impact-item">
+                                    <h5>Risk Context</h5>
+                                    <p>TNFD(자연 관련 재무정보공개) 도입 등으로 기업 활동이 생태계에 미치는 영향에 대한 관리 요구가 증대되고 있습니다.</p>
+                                </div>
+                                <div class="impact-item">
+                                    <h5>Strategic Response</h5>
+                                    <p style="color:var(--sk-orange); font-weight:700;">Nature Positive</p>
+                                    <p>사업장 인근 생태계 영향 평가를 실시하고, 2030년까지 Nature Positive(자연 긍정) 전환 로드맵을 수립 중입니다.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="culture">
+                <div class="section-header">
+                    <h2 class="section-title">Risk Culture</h2>
+                </div>
+                <p>
+                    시스템보다 중요한 것은 구성원의 인식입니다. SK주식회사는 매년 전 구성원 대상 컴플라이언스 교육과 리스크 워크숍을 통해, 
+                    누구나 리스크를 발견하면 즉시 보고하고 공유할 수 있는 <strong>'Speak-up' 문화</strong>를 조성하고 있습니다.
+                </p>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        const sections = document.querySelectorAll("section");
+        const navLi = document.querySelectorAll(".nav-links a");
+        window.onscroll = () => {
+            var current = "";
+            sections.forEach((section) => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 200) { current = section.getAttribute("id"); }
+            });
+            navLi.forEach((a) => {
+                a.classList.remove("active");
+                if (a.getAttribute("href").includes(current)) { a.classList.add("active"); }
+            });
+        };
+    </script>
+</body>
+</html>
