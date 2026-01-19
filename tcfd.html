@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 SK TCFD Strategy Framework</title>
+    <title>2026 SK TCFD Strategy</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -14,158 +14,130 @@
             --sk-orange: #F47725;
             --sk-gradient: linear-gradient(135deg, #EA002C, #F47725);
             --dark-navy: #0c2461;
-            --bg-light: #f4f7fc;
-            --step-bg: #fff;
-            --process-gray: #f0f2f5;
+            --bg-gray: #f4f7fc;
+            --sidebar-width: 260px;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        
         body {
-            font-family: 'Noto Sans KR', sans-serif; color: #333; background: var(--bg-light); line-height: 1.5;
-            height: 100vh; overflow: hidden; /* 한 화면에 담기 위해 스크롤 숨김 (화면 작으면 생김) */
-            display: flex; flex-direction: column;
+            font-family: 'Noto Sans KR', sans-serif; color: #333; background: var(--bg-gray); line-height: 1.6;
         }
-        h1, h2, h3 { font-family: 'Montserrat', sans-serif; }
+        h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
 
-        /* --- [Header] --- */
+        /* --- [Header & Hero] --- */
         header {
-            background: var(--dark-navy); color: white; height: 60px;
-            display: flex; align-items: center; padding: 0 40px; flex-shrink: 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 100;
+            background: var(--dark-navy); position: fixed; top: 0; width: 100%; z-index: 1000;
+            height: 70px; display: flex; align-items: center; padding: 0 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
-        .logo { font-weight: 900; font-size: 1.2rem; }
+        .logo { font-weight: 900; font-size: 1.3rem; color: white; }
         .logo span { color: var(--sk-orange); }
-        .header-title { margin-left: auto; font-size: 0.9rem; opacity: 0.8; letter-spacing: 1px; }
+        .header-title { margin-left: auto; font-weight: 600; font-size: 0.85rem; color: rgba(255,255,255,0.7); }
 
-        /* --- [Main Layout] --- */
-        .main-container {
-            flex-grow: 1; padding: 30px 40px;
-            display: flex; flex-direction: column; gap: 20px;
-            overflow-y: auto; /* 내용 넘치면 내부 스크롤 */
-            max-width: 1800px; margin: 0 auto; width: 100%;
+        .report-hero {
+            margin-top: 70px; background: var(--dark-navy); color: white; padding: 100px 0 120px;
+            text-align: center; position: relative;
+        }
+        .report-hero::after {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(244, 119, 37, 0.1), transparent 40%);
+        }
+        .report-hero h1 { font-size: 3rem; font-weight: 800; margin-bottom: 15px; position: relative; z-index: 2; }
+        .report-hero p { font-size: 1.1rem; opacity: 0.8; max-width: 800px; margin: 0 auto; position: relative; z-index: 2; }
+
+        /* --- [Layout] --- */
+        .report-layout {
+            display: flex; gap: 50px; padding: 0 0 80px; align-items: flex-start;
+            margin-top: -60px; position: relative; z-index: 10;
+        }
+        .sidebar {
+            width: var(--sidebar-width); flex-shrink: 0; position: sticky; top: 100px;
+            background: white; padding: 25px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .sidebar-title { font-size: 0.8rem; font-weight: 700; color: #999; margin-bottom: 15px; }
+        .nav-links { list-style: none; }
+        .nav-links li { margin-bottom: 5px; }
+        .nav-links a {
+            display: block; padding: 12px 15px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; color: #555;
+            transition: 0.2s; text-decoration: none; border-left: 3px solid transparent;
+        }
+        .nav-links a:hover, .nav-links a.active { background: #fff5f0; color: var(--sk-red); border-left-color: var(--sk-red); }
+
+        .content-area { flex-grow: 1; background: white; padding: 60px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .section-title { font-size: 2rem; font-weight: 800; color: var(--dark-navy); margin-bottom: 40px; border-bottom: 2px solid #eee; padding-bottom: 20px; }
+
+        /* --- [Strategy Process Visualization (Timeline Style)] --- */
+        .strategy-timeline {
+            position: relative; padding-left: 40px;
+            display: flex; flex-direction: column; gap: 40px;
+        }
+        /* 중앙 연결선 */
+        .strategy-timeline::before {
+            content: ''; position: absolute; left: 19px; top: 20px; bottom: 20px; width: 4px;
+            background: #eee; border-radius: 2px;
         }
 
-        .page-title {
-            font-size: 1.8rem; font-weight: 800; color: var(--dark-navy); margin-bottom: 10px;
-            display: flex; align-items: center; gap: 15px;
+        /* 공통 Step 카드 */
+        .step-row {
+            position: relative; display: flex; flex-direction: column; gap: 15px;
         }
-        .page-title::after { content:''; flex-grow:1; height:2px; background:#e0e0e0; margin-top:5px; }
-
-        /* --- [Grid System] --- */
-        /* 상단 영역: Step 1~3 + 우측 프로세스 박스 */
-        .top-section {
-            display: grid; grid-template-columns: 2fr 1fr; gap: 30px;
-            min-height: 45%;
+        /* 연결 점 */
+        .step-row::after {
+            content: ''; position: absolute; left: -29px; top: 20px; width: 18px; height: 18px;
+            background: white; border: 4px solid var(--sk-orange); border-radius: 50%; z-index: 1;
         }
         
-        /* 하단 영역: Step 4~6 */
-        .bottom-section {
-            display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;
-            flex-grow: 1;
-        }
-
-        /* --- [Process Step Cards (좌측 메인 흐름)] --- */
-        .flow-container {
-            display: flex; flex-direction: column; justify-content: space-between; gap: 15px; height: 100%;
-        }
-        
-        .step-card {
-            background: white; border-radius: 12px; padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03); position: relative;
-            border-left: 5px solid var(--sk-orange);
-            display: flex; align-items: center; gap: 20px;
-            transition: 0.3s;
-        }
-        .step-card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
-        
-        .step-num {
-            font-size: 1rem; font-weight: 800; color: white; background: var(--sk-orange);
-            padding: 5px 12px; border-radius: 20px; white-space: nowrap;
-        }
-        .step-content { flex-grow: 1; }
-        .step-title { font-size: 1.1rem; font-weight: 700; color: var(--dark-navy); margin-bottom: 5px; }
-        .step-desc { font-size: 0.9rem; color: #666; }
-
-        /* Step 1 내부의 박스들 (리스크/기회) */
-        .step-1-details {
-            display: flex; gap: 10px; margin-top: 10px;
-        }
-        .detail-box {
-            flex: 1; background: #fffcf8; border: 1px solid #ffe8cc; border-radius: 8px; padding: 10px; text-align: center;
-        }
-        .detail-title { font-size: 0.85rem; font-weight: 700; color: var(--sk-orange); margin-bottom: 5px; }
-        .detail-text { font-size: 0.8rem; color: #555; word-break: keep-all; }
-
-        /* 화살표 연결 효과 */
-        .arrow-down { text-align: center; color: #ccc; font-size: 1.2rem; margin: -10px 0; }
-
-
-        /* --- [Right Side: Detailed Process (우측 회색 박스 내용)] --- */
-        .process-detail-box {
-            background: #4a5568; color: white; border-radius: 12px; padding: 25px;
-            display: flex; flex-direction: column; gap: 20px;
+        .step-box {
+            background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; padding: 25px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03); transition: 0.3s;
             position: relative;
         }
-        /* 점선 연결 표현 */
-        .process-detail-box::before {
-            content: ''; position: absolute; left: -30px; top: 50px; width: 30px; height: 2px;
-            border-top: 2px dashed #ccc;
+        .step-box:hover { transform: translateX(5px); border-color: var(--sk-orange); box-shadow: 0 10px 20px rgba(0,0,0,0.08); }
+
+        .step-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
+        .step-badge {
+            background: var(--dark-navy); color: white; padding: 5px 12px; border-radius: 20px;
+            font-size: 0.8rem; font-weight: 800;
         }
+        .step-title { font-size: 1.2rem; font-weight: 700; color: var(--dark-navy); }
+
+        /* Step 1 내부 그리드 */
+        .identification-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: #f9f9f9; padding: 15px; border-radius: 8px;
+        }
+        .sub-box h5 { font-size: 0.9rem; color: var(--sk-orange); margin-bottom: 5px; }
+        .sub-box p { font-size: 0.85rem; color: #666; margin: 0; }
+
+        /* Step 1 옆에 붙는 Side Note (우측 회색 박스 내용) */
+        .side-note {
+            background: #f0f4f8; border-radius: 8px; padding: 15px; font-size: 0.85rem; color: #555;
+            border-left: 3px solid #8898aa; margin-top: 10px; display: flex; flex-direction: column; gap: 8px;
+        }
+        .side-note strong { color: var(--dark-navy); display: block; margin-bottom: 2px; }
+        .tag-row { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 5px; }
+        .tag { font-size: 0.75rem; padding: 2px 8px; background: white; border: 1px solid #ddd; border-radius: 4px; color: #666; }
+
+        /* 연결 화살표 아이콘 */
+        .flow-arrow { 
+            text-align: center; color: #ccc; font-size: 1.5rem; margin: -20px 0; 
+            background: white; width: 40px; margin-left: -20px; z-index: 2; position: relative;
+        }
+
+        /* Step 4,5,6 스타일 (강조) */
+        .step-highlight { border-top: 4px solid var(--sk-orange); }
+        .step-content-center { text-align: center; font-weight: 500; color: #444; }
+
+        /* Step 6 (Final) */
+        .step-final { background: #fff5f0; border-color: #ffd8b3; }
+        .step-final .step-badge { background: var(--sk-orange); }
         
-        .detail-header {
-            background: rgba(0,0,0,0.2); padding: 10px 15px; border-radius: 8px;
-            font-weight: 700; text-align: center; margin-bottom: 10px; font-size: 1.1rem;
-        }
-        
-        .sub-process {
-            background: white; color: #333; border-radius: 8px; padding: 15px;
-            position: relative;
-        }
-        .sub-process::after {
-            content: '↓'; position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%);
-            color: white; font-weight: 800;
-        }
-        .sub-process:last-child::after { display: none; }
-
-        .sub-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 8px; color: var(--dark-navy); }
-        .sub-list { list-style: none; padding-left: 5px; }
-        .sub-list li {
-            font-size: 0.85rem; position: relative; padding-left: 12px; margin-bottom: 4px; color: #555;
-        }
-        .sub-list li::before {
-            content: '•'; position: absolute; left: 0; color: var(--sk-orange);
-        }
-
-        .tag-group { display: flex; gap: 5px; margin-top: 8px; flex-wrap: wrap; }
-        .tag {
-            font-size: 0.75rem; padding: 3px 8px; border-radius: 4px; font-weight: 600;
-        }
-        .tag-gray { background: #eee; color: #555; }
-        .tag-orange { background: #fff5f0; color: var(--sk-orange); border: 1px solid #ffe8cc; }
-
-
-        /* --- [Bottom Section: Steps 4, 5, 6] --- */
-        .bottom-card {
-            background: white; border-radius: 12px; padding: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03); border-top: 5px solid var(--sk-orange);
-            display: flex; flex-direction: column; height: 100%;
-        }
-        .b-step-num {
-            font-size: 0.9rem; font-weight: 800; color: var(--sk-orange); margin-bottom: 10px;
-        }
-        .b-title { font-size: 1.3rem; font-weight: 800; color: var(--dark-navy); margin-bottom: 15px; }
-        .b-content {
-            background: #f9f9f9; border-radius: 8px; padding: 15px; flex-grow: 1;
-            display: flex; align-items: center; justify-content: center; text-align: center;
-            font-size: 0.95rem; color: #444; font-weight: 500;
-        }
-        .b-content i { margin-right: 8px; color: var(--sk-orange); }
-
         /* 반응형 */
-        @media (max-width: 1200px) {
-            body { height: auto; overflow: auto; }
-            .top-section { grid-template-columns: 1fr; }
-            .process-detail-box::before { display: none; }
-            .bottom-section { grid-template-columns: 1fr; }
+        @media (max-width: 1024px) {
+            .report-layout { flex-direction: column; }
+            .sidebar { width: 100%; position: relative; top: 0; margin-bottom: 30px; z-index: 1; }
+            .identification-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -176,139 +148,154 @@
         <div class="header-title">2026 TCFD Strategy Framework</div>
     </header>
 
-    <div class="main-container">
-        <h2 class="page-title">Climate Change Strategy Process</h2>
+    <div class="report-hero">
+        <div class="container">
+            <h1>Climate Strategy Process</h1>
+            <p>기후 리스크 식별부터 대응 전략 수립까지,<br>SK주식회사의 체계적인 6단계 프로세스를 소개합니다.</p>
+        </div>
+    </div>
 
-        <div class="top-section">
+    <div class="container report-layout">
+        
+        <aside class="sidebar">
+            <div class="sidebar-title">Process Steps</div>
+            <ul class="nav-links">
+                <li><a href="#step1">01. 리스크 및 기회 확인</a></li>
+                <li><a href="#step2">02. 영향 식별</a></li>
+                <li><a href="#step3">03. 중대 리스크 선정</a></li>
+                <li><a href="#step4">04. 시나리오 분석</a></li>
+                <li><a href="#step5">05. 재무영향도 분석</a></li>
+                <li><a href="#step6">06. 대응전략</a></li>
+            </ul>
+        </aside>
+
+        <main class="content-area">
+            <h2 class="section-title">TCFD Strategy Framework</h2>
             
-            <div class="flow-container">
-                
-                <div class="step-card">
-                    <div class="step-num">STEP 01</div>
-                    <div class="step-content">
-                        <div class="step-title">리스크 및 기회 확인 (Identification)</div>
-                        <div class="step-1-details">
-                            <div class="detail-box">
-                                <div class="detail-title">RISK</div>
-                                <div class="detail-text">
-                                    <strong>전환:</strong> 정책/법률, 기술, 시장, 명성<br>
-                                    <strong>물리:</strong> 급성, 만성 리스크
-                                </div>
+            <div class="strategy-timeline">
+
+                <div class="step-row" id="step1">
+                    <div class="step-box">
+                        <div class="step-header">
+                            <span class="step-badge">STEP 01</span>
+                            <span class="step-title">리스크 및 기회 확인</span>
+                        </div>
+                        <div class="identification-grid">
+                            <div class="sub-box">
+                                <h5><i class="fas fa-exclamation-triangle"></i> 리스크 (Risks)</h5>
+                                <p><strong>전환:</strong> 정책/법률, 기술, 시장, 명성<br><strong>물리:</strong> 급성(태풍 등), 만성(해수면 상승)</p>
                             </div>
-                            <div class="detail-box">
-                                <div class="detail-title">OPPORTUNITY</div>
-                                <div class="detail-text">
-                                    에너지 자원 전환<br>
-                                    제품/서비스, 시장 변화
-                                </div>
+                            <div class="sub-box">
+                                <h5><i class="fas fa-lightbulb"></i> 기회 (Opportunities)</h5>
+                                <p>에너지 자원 전환, 제품/서비스 혁신,<br>시장 선점 기회</p>
+                            </div>
+                        </div>
+                        <div class="side-note">
+                            <div><strong>📌 모니터링 프로세스</strong>이행 전략 모니터링 및 개선사항 분석을 통해 리스크 풀(Pool)을 상시 업데이트합니다.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-row" id="step2">
+                    <div class="step-box">
+                        <div class="step-header">
+                            <span class="step-badge">STEP 02</span>
+                            <span class="step-title">사업/포트폴리오에 미치는 영향 식별</span>
+                        </div>
+                        <p>발생가능성, 심각도 등 비즈니스 영향도 분석 지표에 따라 각 요소의 <strong>Impact 수준</strong>을 정량/정성적으로 검토합니다.</p>
+                        <div class="side-note">
+                            <strong>📌 이슈풀(Issue Pool) 구성</strong>
+                            국내외 기후 정책/규제 변화 분석, 벤치마킹, 이해관계자 요구사항 반영
+                            <div class="tag-row">
+                                <span class="tag">전환 리스크 8개</span>
+                                <span class="tag">물리적 리스크 2개</span>
+                                <span class="tag">기회 4개 식별</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="arrow-down"><i class="fas fa-arrow-down"></i></div>
-
-                <div class="step-card">
-                    <div class="step-num">STEP 02</div>
-                    <div class="step-content">
-                        <div class="step-title">사업/포트폴리오에 미치는 영향 식별</div>
-                        <div class="step-desc">발생가능성, 심각도 등 비즈니스 영향도 분석 지표에 따른 영향(Impact) 수준 검토</div>
+                <div class="step-row" id="step3">
+                    <div class="step-box step-highlight">
+                        <div class="step-header">
+                            <span class="step-badge">STEP 03</span>
+                            <span class="step-title">중대 리스크 및 기회 선정</span>
+                        </div>
+                        <p>검토된 영향 수준을 바탕으로 우선순위를 매겨, 회사가 집중 관리해야 할 <strong>'중대 리스크 및 기회'</strong>를 최종 선정합니다.</p>
+                        <div class="side-note" style="background:#fff8f5; border-left-color:var(--sk-orange);">
+                            <strong>🎯 최종 선정 결과</strong>
+                            <div class="tag-row">
+                                <span class="tag">전환 리스크 3개</span>
+                                <span class="tag">물리적 리스크 2개</span>
+                                <span class="tag">기회 4개</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="arrow-down"><i class="fas fa-arrow-down"></i></div>
+                <div class="step-row" id="step4">
+                    <div class="step-box">
+                        <div class="step-header">
+                            <span class="step-badge">STEP 04</span>
+                            <span class="step-title">기후 시나리오 분석</span>
+                        </div>
+                        <div class="step-content-center">
+                            <i class="fas fa-chart-line" style="font-size:2rem; color:#ccc; margin-bottom:10px; display:block;"></i>
+                            Below 1.5°C 시나리오를 포함한 복수 시나리오 활용<br>
+                            <span style="color:#888; font-size:0.9rem;">(STEPS, APS, NZE 2050, NGFS 등)</span>
+                        </div>
+                    </div>
+                </div>
 
-                <div class="step-card">
-                    <div class="step-num">STEP 03</div>
-                    <div class="step-content">
-                        <div class="step-title">중대 리스크 및 기회 선정</div>
-                        <div class="step-desc">영향 수준에 따른 최종 중대 리스크 및 기회 선정 (우측 세부 프로세스 참조)</div>
+                <div class="step-row" id="step5">
+                    <div class="step-box">
+                        <div class="step-header">
+                            <span class="step-badge">STEP 05</span>
+                            <span class="step-title">재무영향도 분석</span>
+                        </div>
+                        <div class="step-content-center">
+                            <i class="fas fa-calculator" style="font-size:2rem; color:#ccc; margin-bottom:10px; display:block;"></i>
+                            선정된 중대 리스크 및 기회에 대하여<br><strong>재무적 영향(Financial Impact)</strong>을 구체적으로 산출합니다.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step-row" id="step6">
+                    <div class="step-box step-final">
+                        <div class="step-header">
+                            <span class="step-badge">STEP 06</span>
+                            <span class="step-title">대응전략 (Response)</span>
+                        </div>
+                        <div class="step-content-center" style="color:var(--dark-navy); font-weight:700;">
+                            <i class="fas fa-flag-checkered" style="font-size:2rem; color:var(--sk-orange); margin-bottom:10px; display:block;"></i>
+                            사업 및 포트폴리오 Level 기후 리스크 관리 및<br>청정 기술 투자 확대 전략 추진
+                        </div>
                     </div>
                 </div>
 
             </div>
-
-            <div class="process-detail-box">
-                <div class="detail-header">리스크 식별 프로세스 및 결과</div>
-                
-                <div class="sub-process">
-                    <div class="sub-title">1. 기후 리스크 및 기회 모니터링</div>
-                    <ul class="sub-list">
-                        <li>이행 전략 모니터링 및 개선사항 분석</li>
-                    </ul>
-                </div>
-
-                <div class="sub-process">
-                    <div class="sub-title">2. 이슈풀(Issue Pool) 구성</div>
-                    <ul class="sub-list">
-                        <li>국내외 기후 정책 및 규제 변화 분석</li>
-                        <li>기후 관련 동향 및 벤치마킹 조사</li>
-                        <li>이해관계자 요구사항 반영</li>
-                    </ul>
-                    <div class="tag-group">
-                        <span class="tag tag-gray">리스크</span>
-                        <span style="font-size:0.8rem;">전환 8개, 물리적 2개 식별</span>
-                    </div>
-                </div>
-
-                <div class="sub-process">
-                    <div class="sub-title">3. 중대 리스크 및 기회 도출</div>
-                    <ul class="sub-list">
-                        <li>사업장 Level, 포트폴리오 Level 구분하여 분류</li>
-                    </ul>
-                    <div class="tag-group">
-                        <span class="tag tag-gray">리스크</span>
-                        <span class="tag tag-orange">전환 3개, 물리적 2개 최종 선정</span>
-                    </div>
-                    <div class="tag-group">
-                        <span class="tag tag-gray">기 회</span>
-                        <span class="tag tag-orange">에너지, 시장 등 4개 최종 선정</span>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <div style="text-align:center; color:#ccc; margin:-10px 0;"><i class="fas fa-arrow-down"></i></div>
-
-        <div class="bottom-section">
-            
-            <div class="bottom-card">
-                <div class="b-step-num">STEP 04</div>
-                <div class="b-title">기후 시나리오 분석</div>
-                <div class="b-content">
-                    <div>
-                        Below 1.5°C 포함 복수 시나리오 활용<br>
-                        <span style="color:#888; font-size:0.85rem; margin-top:5px; display:block;">(STEPS, APS, NZE 2050, NGFS 등)</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bottom-card">
-                <div class="b-step-num">STEP 05</div>
-                <div class="b-title">재무영향도 분석</div>
-                <div class="b-content">
-                    <div>
-                        <i class="fas fa-calculator"></i>
-                        전환/물리적 리스크 및 기회에 대한<br><strong>재무영향(Financial Impact)</strong> 분석
-                    </div>
-                </div>
-            </div>
-
-            <div class="bottom-card">
-                <div class="b-step-num">STEP 06</div>
-                <div class="b-title">대응 전략 (Response)</div>
-                <div class="b-content" style="background:#fff5f0; border:1px solid #ffe8cc; color:var(--sk-orange);">
-                    <div>
-                        <i class="fas fa-bullseye"></i>
-                        사업 및 포트폴리오 Level 기후 리스크 관리 및<br><strong>청정 기술 투자 확대</strong> 전략 추진
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
+            </main>
     </div>
 
+    <script>
+        const sections = document.querySelectorAll(".step-row");
+        const navLi = document.querySelectorAll(".nav-links a");
+
+        window.addEventListener("scroll", () => {
+            let current = "";
+            sections.forEach((section) => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 300) { 
+                    current = section.getAttribute("id"); 
+                }
+            });
+            navLi.forEach((a) => {
+                a.classList.remove("active");
+                if (a.getAttribute("href").includes(current)) {
+                    a.classList.add("active");
+                }
+            });
+        });
+    </script>
 </body>
 </html>
